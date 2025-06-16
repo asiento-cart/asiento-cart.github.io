@@ -8,6 +8,31 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
+        .hero-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+        
+        @media (max-width: 480px) {
+            .hero-logo {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .hero-title {
+                gap: 10px;
+            }
+        }
+
         :root {
             --primary: #3a7bff;
             --dark: #121212;
@@ -326,16 +351,20 @@
 </head>
 <body>
     <div class="container">
-        <section class="hero">
-            <h1>Купля-продажа ЦФА</h1>
-        </section>
+        <div class="container">
+            <section class="hero">
+                <div class="hero-title">
+                    <img src="../images/crypto-icon.jpg" alt="Иконка криптовалюты" class="hero-logo">
+                    <h1>Купля-продажа ЦФА</h1>
+                </div>
+            </section>
         
         <section class="platform-section">
             <div class="platform-content">
-                <img src="../images/ecosystem.jpg" alt="Экосистема Asiento" class="platform-image">
+                <img src="../images/ecosystem.avif" alt="Экосистема Asiento" class="platform-image">
                 <div class="platform-text">
                     <h2>Asiento Cart - единая экосистема</h2>
-                    <p>Мы объединяем проверенных трейдеров под одной платформой, обеспечивая безопасность и лучшие условия для наших клиентов. Наша система репутации и отзывов помогает вам выбирать надежных партнеров для сделок.</p>
+                    <p>Мы объединяем проверенных брокеров под одной платформой, обеспечивая безопасность и лучшие условия для наших клиентов. Наша система репутации и отзывов помогает вам выбирать надежных партнеров для сделок.</p>
                     <p>Asiento не является прямым обменником, а выступает агрегатором независимых трейдеров, предлагая вам свободу выбора при гарантиях безопасности.</p>
                 </div>
             </div>
