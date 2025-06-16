@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asiento Cart - Криптовалютные операции</title>
+    <link rel="icon" href="images/whale.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #3a7bff;
+            --dark: #121212;
+            --dark-gray: #1e1e1e;
+            --light: #f5f5f5;
+            --gray: #bbbbbb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Шапка */
+        header {
+            padding: 20px 0;
+            background: rgba(18, 18, 18, 0.9);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        /* Главный баннер */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('images/hero_background.jpg') center/cover no-repeat;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--gray);
+        }
+        
+        /* Кнопка */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(58, 123, 255, 0.3);
+        }
+        
+        /* Особенности */
+        .features {
+            padding: 80px 0;
+            background: var(--dark-gray);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(58, 123, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .feature-icon img {
+            width: 40px;
+        }
+        
+        /* Сервисы */
+        .services {
+            padding: 80px 0;
+        }
+        
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        var(--bg-image) center/cover no-repeat;
+            padding: 40px 30px;
+            border-radius: 10px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(58, 123, 255, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .service-card:hover::after {
+            opacity: 1;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .service-card p {
+            color: var(--gray);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 30px;
+        }
+        
+        .service-card .more-link {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            z-index: 2;
+        }
+        
+        .service-card .more-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .service-card .more-link::after {
+            content: '→';
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover .more-link::after {
+            transform: translateX(3px);
+        }
+        
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .modal-content {
+            background: var(--dark-gray);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        
+        .modal-text {
+            color: var(--light);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .modal-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .modal-btn-secondary {
+            background: #444;
+            color: #ddd;
+        }
+        
+        /* Футер */
+        footer {
+            background: #111;
+            padding: 30px 0;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Главный баннер -->
+    <section class="hero">
+        <div class="container">
+            <h1>Asiento Cart</h1>
+            <p>Платформа для удобного обмена цифровых активов с гарантией безопасности и минимальными комиссиями</p>
+            <button id="contactBtn" class="btn">Начать работу</button>
+        </div>
+    </section>
+    
+    <!-- Особенности -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Наши преимущества</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="images/security_sticker.png" alt="Безопасность">
+                    </div>
+                    <h3>Безопасность</h3>
+                    <p>Используем современные технологии защиты</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="images/sellers_sticker.png" alt="Продавцы">
+                    </div>
+                    <h3>Опытные брокеры</h3>
+                    <p>Работаем только с надежными и активными партнерами</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="images/communication_sticker.png" alt="Поддержка">
+                    </div>
+                    <h3>Удобное взаимодействие</h3>
+                    <p>Хорошая интеграция в экосистему Telegram</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="images/support_sticker.png" alt="Гарантии">
+                    </div>
+                    <h3>Поддержка</h3>
+                    <p>Всегда готовы помочь в решении вопросов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Сервисы -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">Наши сервисы</h2>
+            <div class="services-list">
+                <div class="service-card" style="--bg-image: url('images/block1.jpg')" data-link="service/exchange.html">
+                    <h3>Купля-Продажа криптовалюты</h3>
+                    <p>Быстрый и безопасный обмен с лучшими курсами на рынке. Возможность покупки за Наличку. Поддержка всех популярных криптовалют.</p>
+                    <a href="service/exchange.html" class="more-link">Подробнее</a>
+                </div>
+                
+                <div class="service-card" style="--bg-image: url('images/block2.jpg')" data-link="service/guarantee.html">
+                    <h3>Гарант-сервис</h3>
+                    <p>Полная защита сделок и контроль выполнения обязательств с минимальной комиссией. Мы выступаем гарантом безопасности.</p>
+                    <a href="service/guarantee.html" class="more-link">Подробнее</a>
+                </div>
+                
+                <div class="service-card" style="--bg-image: url('images/block3.jpg')" data-link="service/swap.html">
+                    <h3>Криптовалютный Swap</h3>
+                    <p>Быстрый обмен между разными криптовалютами без необходимости конвертации в фиат.</p>
+                    <a href="service/swap.html" class="more-link">Подробнее</a>
+                </div>
+                
+                <div class="service-card" style="--bg-image: url('images/block4.jpg')" data-link="service/community.html">
+                    <h3>Cообщество трейдеров</h3>
+                    <p>Обучение и обмен опытом с профессиональными трейдерами. Аналитика и торговые сигналы.</p>
+                    <a href="service/community.html" class="more-link">Подробнее</a>
+                </div>
+                
+                <div class="service-card" style="--bg-image: url('images/block5.jpg')" data-link="service/partners.html">
+                    <h3>Партнерская программа</h3>
+                    <p>Зарабатывайте с нами! Станьте брокером, майнером или рекламным менеджером. Создавайте или вступайте в команды и работайте вместе.</p>
+                    <a href="service/partners.html" class="more-link">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Asiento Real en la Cart. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div id="tgModal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="modal-text">Вы будете перенаправлены в наш Telegram канал. Продолжить?</p>
+            <div class="modal-buttons">
+                <button id="cancelBtn" class="modal-btn modal-btn-secondary">Остаться</button>
+                <button id="confirmBtn" class="modal-btn modal-btn-primary">Перейти</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Элементы
+        const contactBtn = document.getElementById('contactBtn');
+        const modal = document.getElementById('tgModal');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const serviceCards = document.querySelectorAll('.service-card');
+        
+        // Открытие модального окна
+        contactBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Подтверждение перехода в Telegram
+        confirmBtn.addEventListener('click', () => {
+            window.location.href = 'https://t.me/kartel1s';
+        });
+        
+        // Закрытие модального окна
+        const closeModal = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+        
+        cancelBtn.addEventListener('click', closeModal);
+        
+        // Закрытие при клике вне окна
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Закрытие по клавише ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        // Переход по клику на карточку сервиса
+        serviceCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Проверяем, не был ли клик по самой ссылке "Подробнее"
+                if (!e.target.classList.contains('more-link') && 
+                    !e.target.parentElement.classList.contains('more-link')) {
+                    const link = card.getAttribute('data-link');
+                    window.location.href = link;
+                }
+            });
+        });
+        
+        // Анимация при скролле
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.feature-card, .service-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Инициализация анимации
+        window.addEventListener('load', () => {
+            const elements = document.querySelectorAll('.feature-card, .service-card');
+            elements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            animateOnScroll();
+        });
+        
+        // Оптимизация скролла
+        let isScrolling;
+        window.addEventListener('scroll', () => {
+            window.cancelAnimationFrame(isScrolling);
+            isScrolling = window.requestAnimationFrame(animateOnScroll);
+        });
+    </script>
+</body>
+</html>
