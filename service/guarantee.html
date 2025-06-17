@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гарант-сервис | Asiento Cart</title>
+    <link rel="icon" href="../images/whale.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        /* Кнопка "Назад" */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(58, 123, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 8px 15px 8px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: rgba(58, 123, 255, 0.25);
+        }
+        
+        .back-arrow {
+            margin-right: 6px;
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Обновленные стили для заголовка */
+        .hero-title {
+            position: relative;
+            display: inline-block;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            margin-top: 50px;
+        }
+
+        .hero-title-background {
+            position: relative;
+            width: 100%;
+            padding-bottom: 30%;
+            background: linear-gradient(135deg, #3a7bff 0%, #1e3c72 100%);
+        }
+
+        .hero-title-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .hero-title h1 {
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            padding: 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        :root {
+            --primary: #3a7bff;
+            --dark: #121212;
+            --dark-gray: #1e1e1e;
+            --light: #f5f5f5;
+            --gray: #bbbbbb;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+            position: relative;
+        }
+        
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Platform description */
+        .platform-section {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 900px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(58, 123, 255, 0.3);
+        }
+        
+        .platform-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .platform-content {
+                flex-direction: row;
+            }
+        }
+        
+        .platform-image {
+            flex: 0 0 150px;
+            width: 100%;
+            max-width: 200px;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .platform-text {
+            flex: 1;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .platform-text {
+                text-align: left;
+            }
+        }
+        
+        /* Contact button */
+        .contact-button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .contact-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(58, 123, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            gap: 10px;
+        }
+        
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(58, 123, 255, 0.4);
+        }
+        
+        .contact-button:active {
+            transform: translateY(1px);
+        }
+        
+        .telegram-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Volume section */
+        .volume-section {
+            background: rgba(18, 18, 18, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+        }
+        
+        .volume-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .volume-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .volume-header p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .volume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .volume-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .volume-card:hover {
+            background: rgba(58, 123, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .volume-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        
+        .volume-info {
+            flex: 1;
+        }
+        
+        .volume-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .volume-amount {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            background: rgba(18, 18, 18, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+        }
+        
+        .faq-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .faq-question {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+        
+        .faq-answer {
+            padding: 0 16px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 16px 16px;
+            max-height: 500px;
+        }
+        
+        .faq-toggle {
+            font-size: 1.3rem;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        
+        /* Footer */
+        footer {
+            background: #111;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        footer p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        /* Адаптация для мобильных */
+        @media (max-width: 768px) {
+            .hero-title h1 {
+                padding: 15px 30px;
+                font-size: 1.6rem;
+            }
+            
+            .hero-title-background {
+                padding-bottom: 40%;
+            }
+            
+            .platform-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .platform-image {
+                margin: 0 auto;
+            }
+            
+            .volume-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 60px 15px;
+                min-height: 250px;
+            }
+            
+            .hero-title h1 {
+                padding: 12px 25px;
+                font-size: 1.4rem;
+            }
+            
+            .hero-title-background {
+                padding-bottom: 50%;
+            }
+            
+            .back-button {
+                top: 15px;
+                left: 15px;
+                padding: 6px 12px 6px 8px;
+                font-size: 0.85rem;
+            }
+            
+            .back-arrow {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .platform-image {
+                height: 120px;
+            }
+            
+            .contact-button {
+                padding: 10px 25px;
+                font-size: 0.95rem;
+            }
+            
+            .volume-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Кнопка "Назад" -->
+        <a href="../index.html" class="back-button">
+            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Назад
+        </a>
+
+        
+        <!-- Описание платформы -->
+        <section class="platform-section">
+            <div class="platform-content">
+                <img src="../images/guarantee.jpg" alt="Гарант-сервис" class="platform-image">
+                <div class="platform-text">
+                    <h2>Безопасные сделки через проверенных гарантов</h2>
+                    <p>Asiento Cart объединяет профессиональных гарантов в единую экосистему, предоставляя вам выбор надежных посредников для безопасного проведения сделок. Мы не являемся гарантами сами, но тщательно проверяем всех участников нашей платформы.</p>
+                    <p>Каждый гарант в нашей системе имеет рейтинг, основанный на отзывах и статистике завершенных сделок. Вы можете выбрать того, кто наилучшим образом соответствует вашим требованиям.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Кнопка связи -->
+        <div class="contact-button-container">
+            <a href="https://t.me/asientochannel" class="contact-button">
+                <svg class="telegram-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.15-.06-.21s-.17-.04-.25-.02c-.11.03-1.84 1.17-5.2 3.44-.49.33-.94.49-1.35.48-.45-.01-1.32-.26-1.97-.47-.79-.26-1.42-.4-1.37-.84.03-.27.32-.55.89-.84 3.5-1.55 5.83-2.6 6.93-3.12 3.14-1.5 3.79-1.76 4.22-1.77.1 0 .32.02.46.12.11.08.14.19.15.27-.01.06.01.28 0 .49z"/>
+                </svg>
+                Связаться с гарантом
+            </a>
+        </div>
+
+        <!-- Секция объемов -->
+        <section class="volume-section">
+            <div class="volume-header">
+                <h2>Объемы сделок за сегодня</h2>
+                <p>Суточные объемы криптовалют через гарантов платформы</p>
+            </div>
+            
+            <div class="volume-grid" id="volumeGrid">
+                <!-- Данные будут добавлены через JS -->
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="faq-header">
+                <h2>Часто задаваемые вопросы</h2>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Как выбрать гаранта?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Мы рекомендуем обращать внимание на следующие критерии:</p>
+                    <ul>
+                        <li>Рейтинг гаранта (от 1 до 5 звезд)</li>
+                        <li>Количество завершенных сделок</li>
+                        <li>Отзывы других пользователей</li>
+                        <li>Среднее время проведения сделки</li>
+                        <li>Специализация (типы сделок, с которыми работает гарант)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Какие комиссии за услуги гаранта?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Комиссии устанавливаются каждым гарантом индивидуально и зависят от:</p>
+                    <ul>
+                        <li>Суммы сделки (обычно процент снижается с увеличением объема)</li>
+                        <li>Сложности сделки (например, мультивалютные операции могут стоить дороже)</li>
+                        <li>Срочности выполнения</li>
+                        <li>Выбранного способа оплаты</li>
+                    </ul>
+                    <p>Средняя комиссия по платформе составляет 1-5% от суммы сделки. Точную стоимость вы увидите при выборе конкретного гаранта.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Как происходит процесс сделки с гарантом?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Общий процесс выглядит так:</p>
+                    <ol>
+                        <li>Вы выбираете гаранта в нашем каталоге</li>
+                        <li>Согласовываете условия сделки (сумма, комиссия, сроки)</li>
+                        <li>Гарант создает сделку в системе и предоставляет реквизиты</li>
+                        <li>Вы переводите средства гаранту</li>
+                        <li>Гарант подтверждает получение средств</li>
+                        <li>Вторая сторона выполняет свои обязательства</li>
+                        <li>Гарант проверяет выполнение и переводит средства второй стороне</li>
+                        <li>Сделка завершена, все стороны подтверждают удовлетворенность результатом</li>
+                    </ol>
+                    <p>Весь процесс занимает от 15 минут до нескольких часов в зависимости от сложности сделки.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Что делать в случае спорной ситуации?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Если возникли разногласия между сторонами:</p>
+                    <ol>
+                        <li>Сообщите о проблеме гаранту</li>
+                        <li>Предоставьте все доказательства выполнения обязательств</li>
+                        <li>Гарант проведет расследование и вынесет решение</li>
+                        <li>При необходимости будет подключен арбитраж от платформы</li>
+                        <li>Средства будут распределены согласно принятому решению</li>
+                    </ol>
+                    <p>В 95% случаев спорные ситуации решаются на уровне гаранта в течение 24 часов.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Asiento Real en la Cart. Все права защищены.</p>
+            </div>
+        </footer>
+
+        <script>
+            // Данные для отображения объемов
+            const volumeData = [
+                { 
+                    name: "Bitcoin", 
+                    logo: "../images/btc.png",
+                    amount: "1,245,000 USD" 
+                },
+                { 
+                    name: "Ethereum", 
+                    logo: "../images/eth.png",
+                    amount: "892,100 USD" 
+                },
+                { 
+                    name: "USDT", 
+                    logo: "../images/usdt.png",
+                    amount: "2,450,000 USD" 
+                },
+                { 
+                    name: "Toncoin", 
+                    logo: "../images/ton.png",
+                    amount: "1,200,000 USD" 
+                },
+                { 
+                    name: "Solana", 
+                    logo: "../images/sol.png",
+                    amount: "1,840,000 USD" 
+                },
+                { 
+                    name: "BNB", 
+                    logo: "../images/bnb.png",
+                    amount: "950,000 USD" 
+                },
+                { 
+                    name: "Ripple", 
+                    logo: "../images/xrp.png",
+                    amount: "780,000 USD" 
+                },
+                { 
+                    name: "Dogecoin", 
+                    logo: "../images/doge.png",
+                    amount: "450,000 USD" 
+                }
+            ];
+
+            // Заполняем сетку объемов
+            const volumeGrid = document.getElementById('volumeGrid');
+            
+            volumeData.forEach(item => {
+                volumeGrid.innerHTML += `
+                    <div class="volume-card">
+                        <img src="${item.logo}" alt="${item.name}" class="volume-logo">
+                        <div class="volume-info">
+                            <div class="volume-name">${item.name}</div>
+                            <div class="volume-amount">${item.amount}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // FAQ функционал
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    const isActive = item.classList.contains('active');
+                    
+                    // Закрываем все вопросы
+                    document.querySelectorAll('.faq-item').forEach(faq => {
+                        faq.classList.remove('active');
+                    });
+                    
+                    // Открываем текущий, если был закрыт
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
