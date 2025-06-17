@@ -8,31 +8,89 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
-        .hero-title {
+        /* Кнопка "Назад" */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            background: rgba(58, 123, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 8px 15px 8px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            z-index: 10;
         }
         
-        .hero-logo {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
+        .back-button:hover {
+            background: rgba(58, 123, 255, 0.25);
         }
         
-        @media (max-width: 480px) {
-            .hero-logo {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .hero-title {
-                gap: 10px;
-            }
+        .back-arrow {
+            margin-right: 6px;
+            width: 16px;
+            height: 16px;
         }
 
+        /* Обновленные стили для заголовка с логотипом */
+        .hero-title {
+            position: relative;
+            display: inline-block;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            margin-top: 50px; /* Добавляем отступ для кнопки "Назад" */
+        }
+
+        .hero-title-background {
+            position: relative;
+            width: 100%;
+            padding-bottom: 30%;
+        }
+
+        .hero-title-background img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(6px) brightness(0.7);
+            transform: scale(1.05);
+        }
+
+        .hero-title-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .hero-title h1 {
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            padding: 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Остальные стили остаются без изменений */
         :root {
             --primary: #3a7bff;
             --dark: #121212;
@@ -64,33 +122,18 @@
             padding: 20px;
             flex: 1;
             width: 100%;
+            position: relative;
         }
         
         /* Hero section */
         .hero {
             text-align: center;
-            padding: 60px 20px;
+            padding: 100px 20px;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('../images/crypto-bg.jpg') center/cover no-repeat;
-            z-index: -1;
-        }
-        
-        .hero h1 {
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            margin-bottom: 20px;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Platform description */
@@ -323,9 +366,42 @@
         }
         
         /* Адаптация для мобильных */
+        @media (max-width: 768px) {
+            .hero-title h1 {
+                padding: 15px 30px;
+                font-size: 1.6rem;
+            }
+            
+            .hero-title-background {
+                padding-bottom: 40%;
+            }
+        }
+
         @media (max-width: 480px) {
             .hero {
-                padding: 40px 15px;
+                padding: 60px 15px;
+                min-height: 300px;
+            }
+            
+            .hero-title h1 {
+                padding: 12px 25px;
+                font-size: 1.4rem;
+            }
+            
+            .hero-title-background {
+                padding-bottom: 50%;
+            }
+            
+            .back-button {
+                top: 15px;
+                left: 15px;
+                padding: 6px 12px 6px 8px;
+                font-size: 0.85rem;
+            }
+            
+            .back-arrow {
+                width: 14px;
+                height: 14px;
             }
             
             .platform-image {
@@ -351,14 +427,28 @@
 </head>
 <body>
     <div class="container">
-        <div class="container">
-            <section class="hero">
-                <div class="hero-title">
-                    <img src="../images/crypto-icon.jpg" alt="Иконка криптовалюты" class="hero-logo">
+        <!-- Кнопка "Назад" -->
+        <a href="../index.html" class="back-button">
+            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Назад
+        </a>
+
+        <section class="hero">
+            <div class="hero-title">
+                <div class="hero-title-background">
+                    <!-- Замените на ваш логотип -->
+                    <img src="../images/crypto-icon.jpg" alt="Фон логотипа">
+                </div>
+                <div class="hero-title-overlay">
                     <h1>Купля-продажа ЦФА</h1>
                 </div>
-            </section>
+            </div>
+        </section>
         
+        <!-- Остальная часть кода остается без изменений -->
         <section class="platform-section">
             <div class="platform-content">
                 <img src="../images/ecosystem.avif" alt="Экосистема Asiento" class="platform-image">
@@ -423,202 +513,194 @@
                 </div>
                 <div class="faq-answer">
                     <p>После согласования условий с трейдером вы переводите средства на его реквизиты, а он отправляет вам криптовалюту. Для новых пользователей рекомендуем начинать с небольших сумм и использовать гарант-сервис.</p>
+                    </section>
                 </div>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Asiento Real en la Cart. Все права защищены.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Криптовалюты для карусели
-        const cryptocurrencies = [
-            { name: "Bitcoin", symbol: "BTC", logo: "../images/btc.png" },
-            { name: "Ethereum", symbol: "ETH", logo: "../images/eth.png" },
-            { name: "Toncoin", symbol: "TON", logo: "../images/ton.png" },
-            { name: "Solana", symbol: "SOL", logo: "../images/sol.png" },
-            { name: "Tether", symbol: "USDT", logo: "../images/usdt.png" },
-            { name: "BNB", symbol: "BNB", logo: "../images/bnb.png" },
-            { name: "Notcoin", symbol: "NOT", logo: "../images/not.png" },
-            { name: "Dogecoin", symbol: "DOGE", logo: "../images/doge.png" },
-            { name: "Monero", symbol: "XMR", logo: "../images/xmr.png" },
-            { name: "XRP", symbol: "XRP", logo: "../images/xrp.png" },
-            { name: "USD Coin", symbol: "USDC", logo: "../images/usdc.png" }
-        ];
-        
-        // Заполняем карусель (дважды для бесконечной прокрутки)
-        const carousel = document.getElementById('cryptoCarousel');
-        
-        function populateCarousel() {
-            carousel.innerHTML = '';
-            // Добавляем два набора карточек для плавного перехода
-            for (let i = 0; i < 2; i++) {
-                cryptocurrencies.forEach((crypto) => {
-                    carousel.innerHTML += `
-                        <div class="crypto-card" data-symbol="${crypto.symbol}">
-                            <img src="${crypto.logo}" alt="${crypto.name}" class="crypto-logo">
-                            <div class="crypto-info">
-                                <div class="crypto-name">${crypto.name}</div>
-                                <div class="crypto-price" id="price-${crypto.symbol}">...</div>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-        }
-        
-        populateCarousel();
-        
-        // Получаем цены криптовалют
-        async function fetchCryptoPrices() {
-            try {
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,the-open-network,solana,tether,binancecoin,notcoin,dogecoin,monero,ripple,usd-coin&vs_currencies=usd');
-                const prices = await response.json();
-                
-                // Обновляем цены на странице
-                if(prices.bitcoin) updatePrice('BTC', prices.bitcoin.usd);
-                if(prices.ethereum) updatePrice('ETH', prices.ethereum.usd);
-                if(prices['the-open-network']) updatePrice('TON', prices['the-open-network'].usd);
-                if(prices.solana) updatePrice('SOL', prices.solana.usd);
-                if(prices.tether) updatePrice('USDT', prices.tether.usd);
-                if(prices.binancecoin) updatePrice('BNB', prices.binancecoin.usd);
-                if(prices.notcoin) updatePrice('NOT', prices.notcoin.usd);
-                if(prices.dogecoin) updatePrice('DOGE', prices.dogecoin.usd);
-                if(prices.monero) updatePrice('XMR', prices.monero.usd);
-                if(prices.ripple) updatePrice('XRP', prices.ripple.usd);
-                if(prices['usd-coin']) updatePrice('USDC', prices['usd-coin'].usd);
-                
-            } catch (error) {
-                console.error('Ошибка при загрузке цен:', error);
-                // Fallback - статические цены
-                document.querySelectorAll('.crypto-price').forEach(el => {
-                    el.textContent = '$---';
-                });
-            }
-        }
-        
-        function updatePrice(symbol, price) {
-            const elements = document.querySelectorAll(`[data-symbol="${symbol}"] .crypto-price`);
-            elements.forEach(el => {
-                el.textContent = `$${price.toLocaleString('en-US', { 
-                    minimumFractionDigits: price < 1 ? 4 : 2, 
-                    maximumFractionDigits: price < 1 ? 6 : 2 
-                })}`;
-            });
-        }
-        
-        // Карусель с плавным бесконечным вращением
-        let currentPosition = 0;
-        let animationId;
-        let isDragging = false;
-        let startX = 0;
-        let initialScrollLeft = 0;
-        const scrollSpeed = 0.5; // пикселей за кадр
-        const cardWidth = 162; // ширина карточки + отступ
-        
-        function initCarousel() {
-            // Автоматическая прокрутка
-            function autoScroll() {
-                if (!isDragging) {
-                    currentPosition -= scrollSpeed;
+            
+                <footer>
+                    <div class="container">
+                        <p>&copy; 2025 Asiento Real en la Cart. Все права защищены.</p>
+                    </div>
+                </footer>
+            
+                <script>
+                    // Криптовалюты для карусели
+                    const cryptocurrencies = [
+                        { name: "Bitcoin", symbol: "BTC", logo: "../images/btc.png" },
+                        { name: "Ethereum", symbol: "ETH", logo: "../images/eth.png" },
+                        { name: "Toncoin", symbol: "TON", logo: "../images/ton.png" },
+                        { name: "Solana", symbol: "SOL", logo: "../images/sol.png" },
+                        { name: "Tether", symbol: "USDT", logo: "../images/usdt.png" },
+                        { name: "BNB", symbol: "BNB", logo: "../images/bnb.png" },
+                        { name: "Notcoin", symbol: "NOT", logo: "../images/not.png" },
+                        { name: "Dogecoin", symbol: "DOGE", logo: "../images/doge.png" },
+                        { name: "Monero", symbol: "XMR", logo: "../images/xmr.png" },
+                        { name: "XRP", symbol: "XRP", logo: "../images/xrp.png" },
+                        { name: "USD Coin", symbol: "USDC", logo: "../images/usdc.png" }
+                    ];
                     
-                    // Если дошли до середины (конец оригинальных карточек), 
-                    // плавно возвращаемся в начало
-                    if (-currentPosition >= carousel.scrollWidth / 2) {
+                    // Заполняем карусель
+                    const carousel = document.getElementById('cryptoCarousel');
+                    
+                    function populateCarousel() {
+                        carousel.innerHTML = '';
+                        // Добавляем два набора карточек для плавного перехода
+                        for (let i = 0; i < 2; i++) {
+                            cryptocurrencies.forEach((crypto) => {
+                                carousel.innerHTML += `
+                                    <div class="crypto-card" data-symbol="${crypto.symbol}">
+                                        <img src="${crypto.logo}" alt="${crypto.name}" class="crypto-logo">
+                                        <div class="crypto-info">
+                                            <div class="crypto-name">${crypto.name}</div>
+                                            <div class="crypto-price" id="price-${crypto.symbol}">...</div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        }
+                    }
+                    
+                    populateCarousel();
+                    
+                    // Получаем цены криптовалют
+                    async function fetchCryptoPrices() {
+                        try {
+                            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,the-open-network,solana,tether,binancecoin,notcoin,dogecoin,monero,ripple,usd-coin&vs_currencies=usd');
+                            const prices = await response.json();
+                            
+                            // Обновляем цены на странице
+                            if(prices.bitcoin) updatePrice('BTC', prices.bitcoin.usd);
+                            if(prices.ethereum) updatePrice('ETH', prices.ethereum.usd);
+                            if(prices['the-open-network']) updatePrice('TON', prices['the-open-network'].usd);
+                            if(prices.solana) updatePrice('SOL', prices.solana.usd);
+                            if(prices.tether) updatePrice('USDT', prices.tether.usd);
+                            if(prices.binancecoin) updatePrice('BNB', prices.binancecoin.usd);
+                            if(prices.notcoin) updatePrice('NOT', prices.notcoin.usd);
+                            if(prices.dogecoin) updatePrice('DOGE', prices.dogecoin.usd);
+                            if(prices.monero) updatePrice('XMR', prices.monero.usd);
+                            if(prices.ripple) updatePrice('XRP', prices.ripple.usd);
+                            if(prices['usd-coin']) updatePrice('USDC', prices['usd-coin'].usd);
+                            
+                        } catch (error) {
+                            console.error('Ошибка при загрузке цен:', error);
+                            // Fallback - статические цены
+                            document.querySelectorAll('.crypto-price').forEach(el => {
+                                el.textContent = '$---';
+                            });
+                        }
+                    }
+                    
+                    function updatePrice(symbol, price) {
+                        const elements = document.querySelectorAll(`[data-symbol="${symbol}"] .crypto-price`);
+                        elements.forEach(el => {
+                            el.textContent = `$${price.toLocaleString('en-US', { 
+                                minimumFractionDigits: price < 1 ? 4 : 2, 
+                                maximumFractionDigits: price < 1 ? 6 : 2 
+                            })}`;
+                        });
+                    }
+                    
+                    // Карусель с плавным бесконечным вращением
+                    let currentPosition = 0;
+                    let animationId;
+                    let isDragging = false;
+                    let startX = 0;
+                    let initialScrollLeft = 0;
+                    const scrollSpeed = 0.5;
+                    const cardWidth = 162;
+                    
+                    function initCarousel() {
+                        function autoScroll() {
+                            if (!isDragging) {
+                                currentPosition -= scrollSpeed;
+                                
+                                if (-currentPosition >= carousel.scrollWidth / 2) {
+                                    currentPosition = 0;
+                                    carousel.style.transition = 'none';
+                                    setCarouselPosition();
+                                    requestAnimationFrame(() => {
+                                        currentPosition -= scrollSpeed;
+                                        carousel.style.transition = 'transform 50ms linear';
+                                        setCarouselPosition();
+                                    });
+                                } else {
+                                    setCarouselPosition();
+                                }
+                            }
+                            animationId = requestAnimationFrame(autoScroll);
+                        }
+                        
+                        function setCarouselPosition() {
+                            carousel.style.transform = `translateX(${currentPosition}px)`;
+                        }
+                        
+                        function handleTouchStart(e) {
+                            isDragging = true;
+                            startX = e.touches ? e.touches[0].pageX : e.clientX;
+                            initialScrollLeft = currentPosition;
+                            carousel.style.transition = 'none';
+                            cancelAnimationFrame(animationId);
+                        }
+                        
+                        function handleTouchMove(e) {
+                            if (!isDragging) return;
+                            e.preventDefault();
+                            const x = e.touches ? e.touches[0].pageX : e.clientX;
+                            const walk = x - startX;
+                            currentPosition = initialScrollLeft + walk;
+                            setCarouselPosition();
+                        }
+                        
+                        function handleTouchEnd() {
+                            isDragging = false;
+                            carousel.style.transition = 'transform 0.5s ease';
+                            animationId = requestAnimationFrame(autoScroll);
+                        }
+                        
+                        // Добавляем обработчики событий
+                        carousel.addEventListener('mousedown', handleTouchStart);
+                        carousel.addEventListener('mousemove', handleTouchMove);
+                        carousel.addEventListener('mouseup', handleTouchEnd);
+                        carousel.addEventListener('mouseleave', handleTouchEnd);
+                        
+                        carousel.addEventListener('touchstart', handleTouchStart, { passive: false });
+                        carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+                        carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+                        
+                        // Запускаем автопрокрутку
+                        animationId = requestAnimationFrame(autoScroll);
+                        
+                        // Обновляем цены каждые 60 секунд
+                        setInterval(fetchCryptoPrices, 60000);
+                    }
+                    
+                    // FAQ функционал
+                    document.querySelectorAll('.faq-question').forEach(question => {
+                        question.addEventListener('click', () => {
+                            const item = question.parentElement;
+                            const isActive = item.classList.contains('active');
+                            
+                            // Закрываем все вопросы
+                            document.querySelectorAll('.faq-item').forEach(faq => {
+                                faq.classList.remove('active');
+                            });
+                            
+                            // Открываем текущий, если был закрыт
+                            if (!isActive) {
+                                item.classList.add('active');
+                            }
+                        });
+                    });
+                    
+                    // Инициализация
+                    fetchCryptoPrices();
+                    initCarousel();
+                    
+                    // Адаптация к ресайзу окна
+                    window.addEventListener('resize', () => {
                         currentPosition = 0;
                         carousel.style.transition = 'none';
                         setCarouselPosition();
-                        requestAnimationFrame(() => {
-                            currentPosition -= scrollSpeed;
-                            carousel.style.transition = 'transform 50ms linear';
-                            setCarouselPosition();
-                        });
-                    } else {
-                        setCarouselPosition();
-                    }
-                }
-                
-                animationId = requestAnimationFrame(autoScroll);
-            }
-            
-            // Устанавливаем позицию карусели
-            function setCarouselPosition() {
-                carousel.style.transform = `translateX(${currentPosition}px)`;
-            }
-            
-            // Обработчики для touch событий
-            function handleTouchStart(e) {
-                isDragging = true;
-                startX = e.touches ? e.touches[0].pageX : e.clientX;
-                initialScrollLeft = currentPosition;
-                carousel.style.transition = 'none';
-                cancelAnimationFrame(animationId);
-            }
-            
-            function handleTouchMove(e) {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.touches ? e.touches[0].pageX : e.clientX;
-                const walk = x - startX;
-                currentPosition = initialScrollLeft + walk;
-                setCarouselPosition();
-            }
-            
-            function handleTouchEnd() {
-                isDragging = false;
-                carousel.style.transition = 'transform 0.5s ease';
-                animationId = requestAnimationFrame(autoScroll);
-            }
-            
-            // Добавляем обработчики событий
-            carousel.addEventListener('mousedown', handleTouchStart);
-            carousel.addEventListener('mousemove', handleTouchMove);
-            carousel.addEventListener('mouseup', handleTouchEnd);
-            carousel.addEventListener('mouseleave', handleTouchEnd);
-            
-            carousel.addEventListener('touchstart', handleTouchStart, { passive: false });
-            carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-            carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-            
-            // Запускаем автопрокрутку
-            animationId = requestAnimationFrame(autoScroll);
-            
-            // Обновляем цены каждые 60 секунд
-            setInterval(fetchCryptoPrices, 60000);
-        }
-        
-        // FAQ функционал
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                const isActive = item.classList.contains('active');
-                
-                // Закрываем все вопросы
-                document.querySelectorAll('.faq-item').forEach(faq => {
-                    faq.classList.remove('active');
-                });
-                
-                // Открываем текущий, если был закрыт
-                if (!isActive) {
-                    item.classList.add('active');
-                }
-            });
-        });
-        
-        // Инициализация
-        fetchCryptoPrices();
-        initCarousel();
-        
-        // Адаптация к ресайзу окна
-        window.addEventListener('resize', () => {
-            currentPosition = 0;
-            carousel.style.transition = 'none';
-            setCarouselPosition();
-        });
-    </script>
-</body>
-</html>
+                    });
+                </script>
+            </body>
+            </html>
