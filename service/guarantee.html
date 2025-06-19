@@ -447,14 +447,99 @@
                     </ul>
                 </div>
             </div>
-        </section>
 
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Как происходит процесс сделки с гарантом?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Процесс состоит из нескольких этапов:</p>
+                    <ol>
+                        <li>Выбор гаранта и согласование условий</li>
+                        <li>Перевод средств на депозит гаранта</li>
+                        <li>Подтверждение получения активов второй стороной</li>
+                        <li>Выполнение обязательств второй стороной</li>
+                        <li>Перевод средств получателю</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Что делать, если возник спор?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>В случае возникновения спорной ситуации:</p>
+                    <ul>
+                        <li>Гарант собирает доказательства от обеих сторон</li>
+                        <li>Проводится анализ выполнения условий сделки</li>
+                        <li>Принимается объективное решение на основе предоставленных данных</li>
+                        <li>При необходимости привлекается арбитраж от Asiento Cart</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Как проверяются гаранты в системе?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Все гаранты проходят многоэтапную проверку:</p>
+                    <ul>
+                        <li>Верификация личности</li>
+                        <li>Проверка репутации в криптосообществе</li>
+                        <li>Анализ финансовой состоятельности</li>
+                        <li>Тестовый период с небольшими сделками</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Какие гарантии безопасности?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Наша система обеспечивает несколько уровней защиты:</p>
+                    <ul> 
+                        <li>Двухфакторная аутентификация для всех операций</li> 
+                        <li>Шифрование персональных данных</li> 
+                        <li>Резервный фонд для компенсации в спорных ситуациях</li> 
+                        <li>Регулярный аудит деятельности гарантов</li> 
+                        <li>Многоуровневая система подтверждения сделок</li> 
+                    </ul> 
+                </div> 
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Как оставить отзыв о работе гаранта?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>После завершения сделки:</p>
+                    <ol>
+                        <li>Войдите в свой аккаунт Asiento Cart</li>
+                        <li>Перейдите в раздел "Мои сделки"</li>
+                        <li>Выберите завершенную сделку</li>
+                        <li>Нажмите "Оставить отзыв"</li>
+                        <li>Оцените работу гаранта по 5-балльной шкале</li>
+                        <li>Добавьте текстовый комментарий (по желанию)</li>
+                    </ol>
+                    <p>Отзывы проходят модерацию в течение 24 часов.</p>
+                </div>
+            </div>
+        </section>
+    
         <footer>
             <div class="container">
                 <p>&copy; 2025 Asiento Real en la Cart. Все права защищены.</p>
             </div>
         </footer>
-
+    
         <script>
             // Получаем данные о объемах торговли через CoinGecko API
             async function fetchCryptoVolumes() {
@@ -507,10 +592,10 @@
                     { image: "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png", symbol: "xrp", total_volume: 2000000000 },
                     { image: "https://assets.coingecko.com/coins/images/6319/large/usdc.png", symbol: "usdc", total_volume: 7000000000 }
                 ];
-
+    
                 const carousel = document.getElementById('volumeCarousel');
                 carousel.innerHTML = '';
-
+    
                 // Добавляем два набора карточек для бесконечной прокрутки
                 for (let i = 0; i < 2; i++) {
                     fallbackData.forEach(crypto => {
@@ -529,11 +614,11 @@
                         `;
                     });
                 }
-
+    
                 // Инициализируем карусель
                 initVolumeCarousel();
             }
-
+    
             // Инициализация карусели объемов
             let currentPosition = 0;
             let animationId;
@@ -542,7 +627,7 @@
             let initialScrollLeft = 0;
             const scrollSpeed = 0.5;
             const cardWidth = 192;
-
+    
             function initVolumeCarousel() {
                 function autoScroll() {
                     if (!isDragging) {
@@ -606,7 +691,7 @@
                 // Запускаем автопрокрутку
                 animationId = requestAnimationFrame(autoScroll);
             }
-
+    
             // FAQ функционал
             document.querySelectorAll('.faq-question').forEach(question => {
                 question.addEventListener('click', () => {
@@ -624,10 +709,10 @@
                     }
                 });
             });
-
+    
             // Загружаем данные при открытии страницы
             document.addEventListener('DOMContentLoaded', fetchCryptoVolumes);
         </script>
     </div>
-</body>
+</body> 
 </html>
