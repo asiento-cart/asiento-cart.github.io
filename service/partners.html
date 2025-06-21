@@ -430,6 +430,123 @@
             fill: currentColor;
           }
 
+                   /* Контейнер для одиночного изображения */
+                   .single-image-container {
+            max-width: 800px;
+            margin: 30px auto;
+          }
+          
+          .image-wrapper {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border: 1px solid rgba(58,123,255,0.2);
+          }
+          
+          .zoomable-image {
+            width: 100%;
+            display: block;
+            cursor: zoom-in;
+            transition: transform 0.3s;
+          }
+          
+          .zoomable-image:hover {
+            transform: scale(1.02);
+          }
+          
+          .image-caption {
+            padding: 12px 15px;
+            background: rgba(30,30,30,0.9);
+            color: #bbbbbb;
+            font-size: 0.85rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+          }
+          
+          /* Модальное окно для увеличенного изображения */
+          .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+          }
+          
+          .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+          }
+          
+          .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+          }
+          
+          .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+          }
+
+                    /* Стили для двух изображений */
+                    .dual-image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+          }
+          
+          .image-block {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border: 1px solid rgba(58,123,255,0.2);
+            transition: transform 0.3s;
+          }
+          
+          .image-block:hover {
+            transform: translateY(-5px);
+          }
+          
+          .zoomable-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            cursor: zoom-in;
+            transition: transform 0.3s;
+          }
+          
+          .image-block:hover .zoomable-image {
+            transform: scale(1.03);
+          }
+          
+          .image-caption {
+            padding: 12px 15px;
+            background: rgba(30,30,30,0.9);
+            color: #bbbbbb;
+            font-size: 0.85rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+          }
+          
+          /* Модальное окно (аналогичное предыдущему примеру) */
+          .image-modal {
+            display: none;
+            position: fixed;
+            /* ... остальные стили модального окна ... */
+          }
+
     </style>
 </head>
 <body>
@@ -465,28 +582,59 @@
         <!-- Карусель криптовалют -->
         <section class="crypto-section">
             <div class="section-header">
-                <h2>Топ-20 по годовому росту</h2>
-                <p>Самые доходные криптовалюты за последний год</p>
+                <h2>Рост популярных криптовалют за последний год</h2>
             </div>
             <div class="crypto-carousel" id="cryptoCarousel">
                 <!-- Данные загрузятся через API -->
             </div>
         </section>
         
+
+
+        <section class="content-block">
+            <h3>Их прибыль - Наша прибыль!</h3>
+            <p>Станьте криптоброкером и получайте 20-30% от доходности, которую получают ваши клиенты. А доходность клиентов - космическая! Криптовалюты демонстрирует невероятные темпы роста, и это ваш шанс заработать на высоких колебаниях рынка.<br>
+              Не упустите возможность, которая открылась благодаря финансовым изменениям, произошедшим после кризиса 2008 года. Криптовалюта предлагает новые горизонты для заработка и финансовой независимости.<br>
+              Присоединяйтесь к нам и начните зарабатывать на криптовалюте уже сегодня!</p>
+            
+            <div class="dual-image-gallery">
+              <div class="image-block">
+                <img 
+                  src="../images/doch.png" 
+                  alt="Диаграмма доходности BTC относительно других активов" 
+                  class="zoomable-image"
+                >
+                <div class="image-caption">Диаграмма доходности BTC относительно других активов <span style="opacity: 0.5;">(нажмите для увелечения)</span></div>
+              </div>
+              
+              <div class="image-block">
+                <img 
+                  src="../images/dochtable.png" 
+                  alt="Таблица доходности BTC относительно других активов" 
+                  class="zoomable-image"
+                >
+                <div class="image-caption">Таблица доходности BTC относительно других активов <span style="opacity: 0.5;">(нажмите для увелечения)</span></div>
+              </div>
+            </div>
+          </section>
+
+
         <!-- Блок с текстом 1 -->
         <section class="content-block">
-            <h3>Почему партнерство с Asiento Cart?</h3>
-            <p>Мы предлагаем уникальные условия для профессиональных участников рынка. С 2008 года только криптовалюты показывают стабильный рост.</p>
+            <h3>Доходность криптовалют</h3>
+            <p>Криптовалюта — это один из самых доходных активов на рынке, если знать, как с ней работать. С правильными стратегиями и знаниями вы можете значительно увеличить свой доход. Не упустите шанс стать частью этой финансовой революции и извлечь выгоду из высоких колебаний цен!</p>
             
-            <div class="image-gallery">
-                <div class="gallery-item">
-                    <img src=" "alt="Криптовалюта">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/" alt="Трейдинг">
-                </div>
+            <div class="single-image-container">
+              <div class="image-wrapper">
+                <img 
+                  src="../images/doch1.png" 
+                  alt="График криптовалют" 
+                  class="zoomable-image"
+                >
+                <div class="image-caption">Доходность популярных криптовалют с 2023 года <span style="opacity: 0.5;">(нажмите для увелечения)</span></div>
+              </div>
             </div>
-        </section>
+          </section>
         
 
         <!-- VIDEO -->
@@ -610,6 +758,7 @@
                 loadFallbackData();
             }
         }
+
 
 
         // VIDEO
@@ -790,6 +939,36 @@
                 });
             });
         });
+
+                  // Общий скрипт для управления модальными окнами
+                  document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.zoomable-image');
+            
+            images.forEach(img => {
+              const modal = document.createElement('div');
+              modal.className = 'image-modal';
+              
+              modal.innerHTML = `
+                <span class="close-modal">&times;</span>
+                <div class="modal-content">
+                  <img src="${img.src}" alt="${img.alt}">
+                  <div class="modal-caption">${img.nextElementSibling.textContent}</div>
+                </div>
+              `;
+              
+              document.body.appendChild(modal);
+              
+              img.addEventListener('click', function() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+              });
+              
+              modal.querySelector('.close-modal').addEventListener('click', function() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+              });
+            });
+          });
 
         // Адаптация скорости прокрутки
         function adjustScrollSpeed() {
