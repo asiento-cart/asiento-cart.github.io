@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сообщество | Asiento Cart</title>
+    <link rel="icon" href="../images/whale.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #3a7bff;
+            --dark: #121212;
+            --light: #f5f5f5;
+            --gray: #bbbbbb;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(58, 123, 255, 0.15);
+            border-radius: 12px;
+            padding: 8px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px;
+        }
+        
+        .tech-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: #111;
+            padding: 15px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        footer p {
+            color: var(--gray);
+            font-size: 0.8rem;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .tech-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span style="margin-left: 8px;">Назад</span>
+    </a>
+
+    <div class="container">
+        <img src="../images/tech.png" alt="Технические работы" class="tech-icon">
+        <h1>Временно недоступно</h1>
+    </div>
+
+    <footer>
+        <div class="legal-notice">
+          <p>&copy; 2025 Asiento Cart. <br> Цифровые финансовые активы не являются платежным средством в РФ. Просим ознокомиться с: </p>
+          <div class="law-references">
+            <a href="https://www.consultant.ru/document/cons_doc_LAW_358753/" target="_blank">ФЗ-259</a>
+            <a href="https://www.consultant.ru/document/cons_doc_LAW_32834/" target="_blank">ФЗ-115</a>
+          </div>
+        </div>
+      </footer>
+      
+      <style>
+      footer {
+        background: #111;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 0.8rem;
+        color: #bbb;
+        border-top: 1px solid rgba(255,255,255,0.05);
+      }
+      
+      .law-references {
+        margin-top: 8px;
+      }
+      
+      .law-references a {
+        color: #3a7bff;
+        text-decoration: none;
+        margin: 0 5px;
+        font-size: 0.75rem;
+      }
+      
+      .law-references a:hover {
+        text-decoration: underline;
+      }
+      </style>
+</body>
+</html>
