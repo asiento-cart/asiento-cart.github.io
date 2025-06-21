@@ -476,17 +476,26 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            touch-action: none;
           }
           
           .modal-content {
+            position: relative;
             max-width: 90%;
             max-height: 90%;
+            transform-origin: center center;
+            transition: transform 0.3s ease;
           }
           
           .modal-content img {
             width: 100%;
             height: auto;
+            max-height: 80vh;
             border-radius: 8px;
+            user-select: none;
+            -webkit-user-drag: none;
+            touch-action: none;
           }
           
           .close-modal {
@@ -496,6 +505,63 @@
             color: white;
             font-size: 2rem;
             cursor: pointer;
+            z-index: 1001;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+          }
+          
+          .modal-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1001;
+          }
+          
+          .modal-btn {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+          }
+          
+          .zoom-value {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 1001;
+          }
+          
+          .rotate-value {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 1001;
           }
 
                     /* Стили для двух изображений */
@@ -539,13 +605,6 @@
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.1);
           }
-          
-          /* Модальное окно (аналогичное предыдущему примеру) */
-          .image-modal {
-            display: none;
-            position: fixed;
-            /* ... остальные стили модального окна ... */
-          }
 
     </style>
 </head>
@@ -555,438 +614,575 @@
         <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        Назад
-    </a>
-
-    <div class="container">
-        <!-- Описание платформы -->
-        <section class="platform-section">
-            <img src="../images/partners.jpg" alt="Asiento Cart" class="platform-image">
-            <div class="platform-text">
-                <h2>Asiento Cart Partners</h2>
-                <p>Платформа для криптоброкеров, трейдеров и гарантов. С момента кризиса 2008 года только криптовалюты демонстрируют такую доходность.</p>
-            </div>
-        </section>
-        
-        <!-- Красивая кнопка Telegram в правильном месте -->
-        <div class="telegram-btn-container">
-            <a href="https://t.me/asientochannel" class="telegram-btn">
-                <svg class="telegram-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.15-.06-.21s-.17-.04-.25-.02c-.11.03-1.84 1.17-5.2 3.44-.49.33-.94.49-1.35.48-.45-.01-1.32-.26-1.97-.47-.79-.26-1.42-.4-1.37-.84.03-.27.32-.55.89-.84 3.5-1.55 5.83-2.6 6.93-3.12 3.14-1.5 3.79-1.76 4.22-1.77.1 0 .32.02.46.12.11.08.14.19.15.27-.01.06.01.28 0 .49z"/>
-                </svg>
-                Связаться в Telegram
-            </a>
-        </div>
-        
-        <!-- Карусель криптовалют -->
-        <section class="crypto-section">
-            <div class="section-header">
-                <h2>Рост популярных криптовалют за последний год</h2>
-            </div>
-            <div class="crypto-carousel" id="cryptoCarousel">
-                <!-- Данные загрузятся через API -->
-            </div>
-        </section>
-        
-
-
-        <section class="content-block">
-            <h3>Их прибыль - Наша прибыль!</h3>
-            <p>Станьте криптоброкером и получайте 20-30% от доходности, которую получают ваши клиенты. А доходность клиентов - космическая! Криптовалюты демонстрирует невероятные темпы роста, и это ваш шанс заработать на высоких колебаниях рынка.<br>
-              Не упустите возможность, которая открылась благодаря финансовым изменениям, произошедшим после кризиса 2008 года. Криптовалюта предлагает новые горизонты для заработка и финансовой независимости.<br>
-              Присоединяйтесь к нам и начните зарабатывать на криптовалюте уже сегодня!</p>
-            
-            <div class="dual-image-gallery">
-              <div class="image-block">
-                <img 
-                  src="../images/doch.png" 
-                  alt="Диаграмма доходности BTC относительно других активов" 
-                  class="zoomable-image"
-                >
-                <div class="image-caption">Диаграмма доходности BTC относительно других активов <span style="opacity: 0.5;">(нажмите для увелечения)</span></div>
+          </svg>
+          Назад
+      </a>
+      
+      <div class="container">
+          <!-- Описание платформы -->
+          <section class="platform-section">
+              <img src="../images/partners.jpg" alt="Asiento Cart" class="platform-image">
+              <div class="platform-text">
+                  <h2>Asiento Cart Partners</h2>
+                  <p>Платформа для криптоброкеров, трейдеров и гарантов. С момента кризиса 2008 года только криптовалюты демонстрируют такую доходность.</p>
+              </div>
+          </section>
+          
+          <!-- Красивая кнопка Telegram в правильном месте -->
+          <div class="telegram-btn-container">
+              <a href="https://t.me/asientochannel" class="telegram-btn">
+                  <svg class="telegram-icon" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.15-.06-.21s-.17-.04-.25-.02c-.11.03-1.84 1.17-5.2 3.44-.49.33-.94.49-1.35.48-.45-.01-1.32-.26-1.97-.47-.79-.26-1.42-.4-1.37-.84.03-.27.32-.55.89-.84 3.5-1.55 5.83-2.6 6.93-3.12 3.14-1.5 3.79-1.76 4.22-1.77.1 0 .32.02.46.12.11.08.14.19.15.27-.01.06.01.28 0 .49z"/>
+                  </svg>
+                  Связаться в Telegram
+              </a>
+          </div>
+          
+          <!-- Карусель криптовалют -->
+          <section class="crypto-section">
+              <div class="section-header">
+                  <h2>Рост популярных криптовалют за последний год</h2>
+              </div>
+              <div class="crypto-carousel" id="cryptoCarousel">
+                  <!-- Данные загрузятся через API -->
+              </div>
+          </section>
+          
+      
+          <section class="content-block">
+              <h3>Их прибыль - Наша прибыль!</h3>
+              <p>Станьте криптоброкером и получайте 20-30% от доходности, которую получают ваши клиенты. А доходность клиентов - космическая! Криптовалюты демонстрирует невероятные темпы роста, и это ваш шанс заработать на высоких колебаниях рынка.<br>
+                Не упустите возможность, которая открылась благодаря финансовым изменениям, произошедшим после кризиса 2008 года. Криптовалюта предлагает новые горизонты для заработка и финансовой независимости.<br>
+                Присоединяйтесь к нам и начните зарабатывать на криптовалюте уже сегодня!</p>
+              
+              <div class="dual-image-gallery">
+                <div class="image-block">
+                  <img 
+                    src="../images/doch.png" 
+                    alt="Диаграмма доходности BTC относительно других активов" 
+                    class="zoomable-image"
+                  >
+                  <div class="image-caption">Диаграмма доходности BTC относительно других активов <span style="opacity: 0.5;">(нажмите для увеличения)</span></div>
+                </div>
+                
+                <div class="image-block">
+                  <img 
+                    src="../images/dochtable.png" 
+                    alt="Таблица доходности BTC относительно других активов" 
+                    class="zoomable-image"
+                  >
+                  <div class="image-caption">Таблица доходности BTC относительно других активов <span style="opacity: 0.5;">(нажмите для увеличения)</span></div>
+                </div>
+              </div>
+            </section>
+      
+      
+          <!-- Блок с текстом 1 -->
+          <section class="content-block">
+              <h3>Доходность криптовалют</h3>
+              <p>Криптовалюта — это один из самых доходных активов на рынке, если знать, как с ней работать. С правильными стратегиями и знаниями вы можете значительно увеличить свой доход. Не упустите шанс стать частью этой финансовой революции и извлечь выгоду из высоких колебаний цен!</p>
+              
+              <div class="single-image-container">
+                <div class="image-wrapper">
+                  <img 
+                    src="../images/doch1.png" 
+                    alt="График криптовалют" 
+                    class="zoomable-image"
+                  >
+                  <div class="image-caption">Доходность популярных криптовалют с 2023 года <span style="opacity: 0.5;">(нажмите для увеличения)</span></div>
+                </div>
+              </div>
+            </section>
+          
+      
+          <!-- VIDEO -->
+          <section class="content-block">
+              <h3>Цель нашей работы?</h3>
+              <div class="video-player">
+                <video id="asientoVideo" poster="../images/video-poster.jpg">
+                  <source src="../images/VID_2025.mp4" type="video/mp4">
+                  Ваш браузер не поддерживает видео.
+                </video>
+                <div class="video-controls">
+                  <button class="play-pause">
+                    <svg viewBox="0 0 24 24" class="play-icon">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="pause-icon">
+                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                  </button>
+                  <div class="progress-bar">
+                    <div class="progress"></div>
+                  </div>
+                  <button class="mute-btn">
+                    <svg viewBox="0 0 24 24" class="volume-on">
+                      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="volume-off">
+                      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="replay-overlay">
+                  <button class="replay-btn">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                    </svg>
+                    Смотреть снова
+                  </button>
+                </div>
+              </div>
+            </section>
+          
+          <!-- FAQ блок -->
+          <section class="content-block">
+              <h3>Частые вопросы</h3>
+              
+              <div class="faq-item">
+                  <div class="faq-question">
+                      <span>Как стать партнером?</span>
+                      <span>+</span>
+                  </div>
+                  <div class="faq-answer">
+                      <p>Для участия в партнерской программе свяжитесь с нами в Telegram и предоставьте информацию о вашей деятельности.</p>
+                  </div>
               </div>
               
-              <div class="image-block">
-                <img 
-                  src="../images/dochtable.png" 
-                  alt="Таблица доходности BTC относительно других активов" 
-                  class="zoomable-image"
-                >
-                <div class="image-caption">Таблица доходности BTC относительно других активов <span style="opacity: 0.5;">(нажмите для увелечения)</span></div>
+              <div class="faq-item">
+                  <div class="faq-question">
+                      <span>Какие условия сотрудничества?</span>
+                      <span>+</span>
+                  </div>
+                  <div class="faq-answer">
+                      <p>Мы предлагаем индивидуальные условия для каждого партнера в зависимости от объема и направления деятельности.</p>
+                  </div>
               </div>
-            </div>
+              
+              <div class="faq-item">
+                  <div class="faq-question">
+                      <span>Как часто обновляются данные?</span>
+                      <span>+</span>
+                  </div>
+                  <div class="faq-answer">
+                      <p>Данные о криптовалютах обновляются в реальном времени через CoinGecko API.</p>
+                  </div>
+              </div>
           </section>
-
-
-        <!-- Блок с текстом 1 -->
-        <section class="content-block">
-            <h3>Доходность криптовалют</h3>
-            <p>Криптовалюта — это один из самых доходных активов на рынке, если знать, как с ней работать. С правильными стратегиями и знаниями вы можете значительно увеличить свой доход. Не упустите шанс стать частью этой финансовой революции и извлечь выгоду из высоких колебаний цен!</p>
-            
-            <div class="single-image-container">
-              <div class="image-wrapper">
-                <img 
-                  src="../images/doch1.png" 
-                  alt="График криптовалют" 
-                  class="zoomable-image"
-                >
-                <div class="image-caption">Доходность популярных криптовалют с 2023 года <span style="opacity: 0.5;">(нажмите для увелечения)</span></div>
-              </div>
+      </div>
+      
+      <footer>
+          <div class="legal-notice">
+            <p>&copy; 2025 Asiento Cart. <br> Цифровые финансовые активы не являются платежным средством в РФ. Просим ознокомиться с: </p>
+            <div class="law-references">
+              <a href="https://www.consultant.ru/document/cons_doc_LAW_358753/" target="_blank">ФЗ-259</a>
+              <a href="https://www.consultant.ru/document/cons_doc_LAW_32834/" target="_blank">ФЗ-115</a>
             </div>
-          </section>
-        
-
-        <!-- VIDEO -->
-        <section class="content-block">
-            <h3>Цель нашей работы?</h3>
-            <div class="video-player">
-              <video id="asientoVideo" poster="../images/video-poster.jpg">
-                <source src="../images/VID_2025.mp4" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-              </video>
-              <div class="video-controls">
-                <button class="play-pause">
-                  <svg viewBox="0 0 24 24" class="play-icon">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                  <svg viewBox="0 0 24 24" class="pause-icon">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                  </svg>
-                </button>
-                <div class="progress-bar">
-                  <div class="progress"></div>
-                </div>
-                <button class="mute-btn">
-                  <svg viewBox="0 0 24 24" class="volume-on">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                  </svg>
-                  <svg viewBox="0 0 24 24" class="volume-off">
-                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="replay-overlay">
-                <button class="replay-btn">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-                  </svg>
-                  Смотреть снова
-                </button>
-              </div>
-            </div>
-          </section>
-        
-        <!-- FAQ блок -->
-        <section class="content-block">
-            <h3>Частые вопросы</h3>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <span>Как стать партнером?</span>
-                    <span>+</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Для участия в партнерской программе свяжитесь с нами в Telegram и предоставьте информацию о вашей деятельности.</p>
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <span>Какие условия сотрудничества?</span>
-                    <span>+</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Мы предлагаем индивидуальные условия для каждого партнера в зависимости от объема и направления деятельности.</p>
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">
-                    <span>Как часто обновляются данные?</span>
-                    <span>+</span>
-                </div>
-                <div class="faq-answer">
-                    <p>Данные о криптовалютах обновляются в реальном времени через CoinGecko API.</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <div class="legal-notice">
-          <p>&copy; 2025 Asiento Cart. <br> Цифровые финансовые активы не являются платежным средством в РФ. Просим ознокомиться с: </p>
-          <div class="law-references">
-            <a href="https://www.consultant.ru/document/cons_doc_LAW_358753/" target="_blank">ФЗ-259</a>
-            <a href="https://www.consultant.ru/document/cons_doc_LAW_32834/" target="_blank">ФЗ-115</a>
           </div>
+        </footer>
+      
+      <!-- Модальное окно для изображений -->
+      <div class="image-modal" id="imageModal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+          <img id="modalImage" src="" alt="">
         </div>
-      </footer>
-
-    <script>
-        // Получаем данные о самых доходных криптовалютах за год
-        async function fetchTopGainers() {
-            try {
-                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_1y_in_currency_desc&per_page=20&page=1&sparkline=false&price_change_percentage=1y');
-                const data = await response.json();
-                
-                const carousel = document.getElementById('cryptoCarousel');
-                carousel.innerHTML = '';
-                
-                // Добавляем два набора карточек для бесконечной прокрутки
-                for (let i = 0; i < 2; i++) {
-                    data.forEach(crypto => {
-                        const yearlyChange = crypto.price_change_percentage_1y_in_currency?.toFixed(2) || 'N/A';
-                        const isPositive = yearlyChange >= 0;
-                        
-                        carousel.innerHTML += `
-                            <div class="crypto-card">
-                                <img src="${crypto.image}" alt="${crypto.name}" class="crypto-logo">
-                                <div class="crypto-name">${crypto.name}</div>
-                                <div class="crypto-change" style="color: ${isPositive ? 'var(--green)' : 'var(--red)'}">
-                                    ${isPositive ? '+' : ''}${yearlyChange}% (1y)
-                                </div>
-                            </div>
-                        `;
-                    });
+        <div class="modal-controls">
+          <button class="modal-btn" id="zoomInBtn">+</button>
+          <button class="modal-btn" id="zoomOutBtn">-</button>
+          <button class="modal-btn" id="rotateLeftBtn">↺</button>
+          <button class="modal-btn" id="rotateRightBtn">↻</button>
+          <button class="modal-btn" id="resetBtn">⟲</button>
+        </div>
+        <div class="zoom-value" id="zoomValue">100%</div>
+        <div class="rotate-value" id="rotateValue">0°</div>
+      </div>
+      
+      <script>
+          // Получаем данные о самых доходных криптовалютах за год
+          async function fetchTopGainers() {
+              try {
+                  const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_1y_in_currency_desc&per_page=20&page=1&sparkline=false&price_change_percentage=1y');
+                  const data = await response.json();
+                  
+                  const carousel = document.getElementById('cryptoCarousel');
+                  carousel.innerHTML = '';
+                  
+                  // Добавляем два набора карточек для бесконечной прокрутки
+                  for (let i = 0; i < 2; i++) {
+                      data.forEach(crypto => {
+                          const yearlyChange = crypto.price_change_percentage_1y_in_currency?.toFixed(2) || 'N/A';
+                          const isPositive = yearlyChange >= 0;
+                          
+                          carousel.innerHTML += `
+                              <div class="crypto-card">
+                                  <img src="${crypto.image}" alt="${crypto.name}" class="crypto-logo">
+                                  <div class="crypto-name">${crypto.name}</div>
+                                  <div class="crypto-change" style="color: ${isPositive ? 'var(--green)' : 'var(--red)'}">
+                                      ${isPositive ? '+' : ''}${yearlyChange}% (1y)
+                                  </div>
+                              </div>
+                          `;
+                      });
+                  }
+                  
+                  initCarousel();
+                  
+              } catch (error) {
+                  console.error('Ошибка загрузки данных:', error);
+                  loadFallbackData();
+              }
+          }
+      
+          // VIDEO
+      
+            // Видео-контролы
+            // Инициализация после загрузки DOM
+            document.addEventListener('DOMContentLoaded', function() {
+              const video = document.getElementById('asientoVideo');
+              const playPauseBtn = document.querySelector('.play-pause');
+              const muteBtn = document.querySelector('.mute-btn');
+              const progressBar = document.querySelector('.progress-bar');
+              const progress = document.querySelector('.progress');
+              const playIcon = document.querySelector('.play-icon');
+              const pauseIcon = document.querySelector('.pause-icon');
+              const volumeOn = document.querySelector('.volume-on');
+              const volumeOff = document.querySelector('.volume-off');
+              const replayOverlay = document.querySelector('.replay-overlay');
+              const replayBtn = document.querySelector('.replay-btn');
+      
+              // Управление воспроизведением
+              playPauseBtn.addEventListener('click', function() {
+                if(video.paused) {
+                  video.play();
+                  playIcon.style.display = 'none';
+                  pauseIcon.style.display = 'block';
+                  replayOverlay.style.display = 'none';
+                } else {
+                  video.pause();
+                  playIcon.style.display = 'block';
+                  pauseIcon.style.display = 'none';
                 }
-                
-                initCarousel();
-                
-            } catch (error) {
-                console.error('Ошибка загрузки данных:', error);
-                loadFallbackData();
-            }
-        }
-
-
-
-        // VIDEO
-
-          // Видео-контролы
-          // Инициализация после загрузки DOM
-          document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('asientoVideo');
-            const playPauseBtn = document.querySelector('.play-pause');
-            const muteBtn = document.querySelector('.mute-btn');
-            const progressBar = document.querySelector('.progress-bar');
-            const progress = document.querySelector('.progress');
-            const playIcon = document.querySelector('.play-icon');
-            const pauseIcon = document.querySelector('.pause-icon');
-            const volumeOn = document.querySelector('.volume-on');
-            const volumeOff = document.querySelector('.volume-off');
-            const replayOverlay = document.querySelector('.replay-overlay');
-            const replayBtn = document.querySelector('.replay-btn');
-
-            // Управление воспроизведением
-            playPauseBtn.addEventListener('click', function() {
-              if(video.paused) {
+              });
+      
+              // Управление звуком
+              muteBtn.addEventListener('click', function() {
+                video.muted = !video.muted;
+                volumeOn.style.display = video.muted ? 'none' : 'block';
+                volumeOff.style.display = video.muted ? 'block' : 'none';
+              });
+      
+              // Обновление прогресс-бара
+              video.addEventListener('timeupdate', function() {
+                const percent = (video.currentTime / video.duration) * 100;
+                progress.style.width = percent + '%';
+              });
+      
+              // Перемотка по клику на прогресс-бар
+              progressBar.addEventListener('click', function(e) {
+                const pos = (e.pageX - this.getBoundingClientRect().left) / this.offsetWidth;
+                video.currentTime = pos * video.duration;
+              });
+      
+              // Показ кнопки повтора после завершения видео
+              video.addEventListener('ended', function() {
+                replayOverlay.style.display = 'flex';
+              });
+      
+              // Обработка клика на кнопку повтора
+              replayBtn.addEventListener('click', function() {
+                video.currentTime = 0;
                 video.play();
+                replayOverlay.style.display = 'none';
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
-                replayOverlay.style.display = 'none';
-              } else {
-                video.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
+              });
+            });
+      
+          // Фолбэк данные
+          function loadFallbackData() {
+              const fallbackData = [
+                  { image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png", name: "Bitcoin", price_change_percentage_1y_in_currency: 85.42 },
+                  { image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png", name: "Ethereum", price_change_percentage_1y_in_currency: 63.21 },
+                  { image: "https://assets.coingecko.com/coins/images/975/large/Solana.png", name: "Solana", price_change_percentage_1y_in_currency: 208.76 }
+              ];
+      
+              const carousel = document.getElementById('cryptoCarousel');
+              carousel.innerHTML = '';
+      
+              for (let i = 0; i < 2; i++) {
+                  fallbackData.forEach(crypto => {
+                      carousel.innerHTML += `
+                          <div class="crypto-card">
+                              <img src="${crypto.image}" alt="${crypto.name}" class="crypto-logo">
+                              <div class="crypto-name">${crypto.name}</div>
+                              <div class="crypto-change" style="color: var(--green)">
+                                  +${crypto.price_change_percentage_1y_in_currency.toFixed(2)}% (1y)
+                              </div>
+                          </div>
+                      `;
+                  });
               }
-            });
+      
+              initCarousel();
+          }
+      
+    // Инициализация карусели
+    let currentPosition = 0;
+    let animationId;
+    let isDragging = false;
+    let startX = 0;
+    let initialScrollLeft = 0;
+    let scrollSpeed = 0.5;
 
-            // Управление звуком
-            muteBtn.addEventListener('click', function() {
-              video.muted = !video.muted;
-              volumeOn.style.display = video.muted ? 'none' : 'block';
-              volumeOff.style.display = video.muted ? 'block' : 'none';
-            });
-
-            // Обновление прогресс-бара
-            video.addEventListener('timeupdate', function() {
-              const percent = (video.currentTime / video.duration) * 100;
-              progress.style.width = percent + '%';
-            });
-
-            // Перемотка по клику на прогресс-бар
-            progressBar.addEventListener('click', function(e) {
-              const pos = (e.pageX - this.getBoundingClientRect().left) / this.offsetWidth;
-              video.currentTime = pos * video.duration;
-            });
-
-            // Показ кнопки повтора после завершения видео
-            video.addEventListener('ended', function() {
-              replayOverlay.style.display = 'flex';
-            });
-
-            // Обработка клика на кнопку повтора
-            replayBtn.addEventListener('click', function() {
-              video.currentTime = 0;
-              video.play();
-              replayOverlay.style.display = 'none';
-              playIcon.style.display = 'none';
-              pauseIcon.style.display = 'block';
-            });
-          });
-
-
-        // Фолбэк данные
-        function loadFallbackData() {
-            const fallbackData = [
-                { image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png", name: "Bitcoin", price_change_percentage_1y_in_currency: 85.42 },
-                { image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png", name: "Ethereum", price_change_percentage_1y_in_currency: 63.21 },
-                { image: "https://assets.coingecko.com/coins/images/975/large/Solana.png", name: "Solana", price_change_percentage_1y_in_currency: 208.76 }
-            ];
-
-            const carousel = document.getElementById('cryptoCarousel');
-            carousel.innerHTML = '';
-
-            for (let i = 0; i < 2; i++) {
-                fallbackData.forEach(crypto => {
-                    carousel.innerHTML += `
-                        <div class="crypto-card">
-                            <img src="${crypto.image}" alt="${crypto.name}" class="crypto-logo">
-                            <div class="crypto-name">${crypto.name}</div>
-                            <div class="crypto-change" style="color: var(--green)">
-                                +${crypto.price_change_percentage_1y_in_currency.toFixed(2)}% (1y)
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            initCarousel();
-        }
-
-        // Инициализация карусели
-        let currentPosition = 0;
-        let animationId;
-        let isDragging = false;
-        let startX = 0;
-        let initialScrollLeft = 0;
-        let scrollSpeed = 0.5;
-
-        function initCarousel() {
-            function autoScroll() {
-                if (!isDragging) {
-                    currentPosition -= scrollSpeed;
-                    
-                    if (-currentPosition >= cryptoCarousel.scrollWidth / 2) {
-                        currentPosition = 0;
-                        cryptoCarousel.style.transition = 'none';
+    function initCarousel() {
+        function autoScroll() {
+            if (!isDragging) {
+                currentPosition -= scrollSpeed;
+                
+                if (-currentPosition >= cryptoCarousel.scrollWidth / 2) {
+                    currentPosition = 0;
+                    cryptoCarousel.style.transition = 'none';
+                    setCarouselPosition();
+                    requestAnimationFrame(() => {
+                        currentPosition -= scrollSpeed;
+                        cryptoCarousel.style.transition = 'transform 50ms linear';
                         setCarouselPosition();
-                        requestAnimationFrame(() => {
-                            currentPosition -= scrollSpeed;
-                            cryptoCarousel.style.transition = 'transform 50ms linear';
-                            setCarouselPosition();
-                        });
-                    } else {
-                        setCarouselPosition();
-                    }
+                    });
+                } else {
+                    setCarouselPosition();
                 }
-                animationId = requestAnimationFrame(autoScroll);
             }
-            
-            function setCarouselPosition() {
-                cryptoCarousel.style.transform = `translateX(${currentPosition}px)`;
-            }
-            
-            function handleTouchStart(e) {
-                isDragging = true;
-                startX = e.touches ? e.touches[0].pageX : e.clientX;
-                initialScrollLeft = currentPosition;
-                cryptoCarousel.style.transition = 'none';
-                cancelAnimationFrame(animationId);
-            }
-            
-            function handleTouchMove(e) {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.touches ? e.touches[0].pageX : e.clientX;
-                const walk = x - startX;
-                currentPosition = initialScrollLeft + walk;
-                setCarouselPosition();
-            }
-            
-            function handleTouchEnd() {
-                isDragging = false;
-                cryptoCarousel.style.transition = 'transform 0.5s ease';
-                animationId = requestAnimationFrame(autoScroll);
-            }
-            
-            // Добавляем обработчики событий
-            cryptoCarousel.addEventListener('mousedown', handleTouchStart);
-            cryptoCarousel.addEventListener('mousemove', handleTouchMove);
-            cryptoCarousel.addEventListener('mouseup', handleTouchEnd);
-            cryptoCarousel.addEventListener('mouseleave', handleTouchEnd);
-            
-            cryptoCarousel.addEventListener('touchstart', handleTouchStart, { passive: false });
-            cryptoCarousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-            cryptoCarousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-            
-            // Запускаем автопрокрутку
             animationId = requestAnimationFrame(autoScroll);
         }
+        
+        function setCarouselPosition() {
+            cryptoCarousel.style.transform = `translateX(${currentPosition}px)`;
+        }
+        
+        function handleTouchStart(e) {
+            isDragging = true;
+            startX = e.touches ? e.touches[0].pageX : e.clientX;
+            initialScrollLeft = currentPosition;
+            cryptoCarousel.style.transition = 'none';
+            cancelAnimationFrame(animationId);
+        }
+        
+        function handleTouchMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.touches ? e.touches[0].pageX : e.clientX;
+            const walk = x - startX;
+            currentPosition = initialScrollLeft + walk;
+            setCarouselPosition();
+        }
+        
+        function handleTouchEnd() {
+            isDragging = false;
+            cryptoCarousel.style.transition = 'transform 0.5s ease';
+            animationId = requestAnimationFrame(autoScroll);
+        }
+        
+        // Добавляем обработчики событий
+        cryptoCarousel.addEventListener('mousedown', handleTouchStart);
+        cryptoCarousel.addEventListener('mousemove', handleTouchMove);
+        cryptoCarousel.addEventListener('mouseup', handleTouchEnd);
+        cryptoCarousel.addEventListener('mouseleave', handleTouchEnd);
+        
+        cryptoCarousel.addEventListener('touchstart', handleTouchStart, { passive: false });
+        cryptoCarousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+        cryptoCarousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+        
+        // Запускаем автопрокрутку
+        animationId = requestAnimationFrame(autoScroll);
+    }
 
-        // FAQ функционал
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-                
-                // Закрываем другие вопросы
-                document.querySelectorAll('.faq-item').forEach(faq => {
-                    if (faq !== item) {
-                        faq.classList.remove('active');
-                    }
-                });
-            });
-        });
-
-                  // Общий скрипт для управления модальными окнами
-                  document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('.zoomable-image');
+    // FAQ функционал
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            item.classList.toggle('active');
             
-            images.forEach(img => {
-              const modal = document.createElement('div');
-              modal.className = 'image-modal';
-              
-              modal.innerHTML = `
-                <span class="close-modal">&times;</span>
-                <div class="modal-content">
-                  <img src="${img.src}" alt="${img.alt}">
-                  <div class="modal-caption">${img.nextElementSibling.textContent}</div>
-                </div>
-              `;
-              
-              document.body.appendChild(modal);
-              
-              img.addEventListener('click', function() {
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-              });
-              
-              modal.querySelector('.close-modal').addEventListener('click', function() {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-              });
+            // Закрываем другие вопросы
+            document.querySelectorAll('.faq-item').forEach(faq => {
+                if (faq !== item) {
+                    faq.classList.remove('active');
+                }
             });
-          });
-
-        // Адаптация скорости прокрутки
-        function adjustScrollSpeed() {
-            scrollSpeed = window.innerWidth < 768 ? 0.8 : 0.5;
-        }
-
-        // Обновление данных каждые 5 минут
-        function startDataUpdates() {
-            fetchTopGainers();
-            setInterval(fetchTopGainers, 5 * 60 * 1000);
-        }
-
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', () => {
-            adjustScrollSpeed();
-            startDataUpdates();
-            window.addEventListener('resize', adjustScrollSpeed);
         });
-    </script>
-</body>
+    });
+
+    // Управление модальным окном для изображений
+    let scale = 1;
+    let rotation = 0;
+    let isDraggingImage = false;
+    let startPos = { x: 0, y: 0 };
+    let translate = { x: 0, y: 0 };
+    let lastDistance = null;
+    let initialTouches = [];
+    
+    function updateTransform() {
+        const modalContent = document.querySelector('.modal-content');
+        modalContent.style.transform = `translate(${translate.x}px, ${translate.y}px) scale(${scale}) rotate(${rotation}deg)`;
+        document.getElementById('zoomValue').textContent = `${Math.round(scale * 100)}%`;
+        document.getElementById('rotateValue').textContent = `${rotation}°`;
+    }
+    
+    function resetImage() {
+        scale = 1;
+        rotation = 0;
+        translate = { x: 0, y: 0 };
+        updateTransform();
+    }
+    
+    document.querySelectorAll('.zoomable-image').forEach(img => {
+        img.addEventListener('click', function() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'flex';
+            modalImg.src = this.src;
+            modalImg.alt = this.alt;
+            resetImage();
+        });
+    });
+    
+    document.querySelector('.close-modal').addEventListener('click', function() {
+        document.getElementById('imageModal').style.display = 'none';
+    });
+    
+    // Управление масштабом и вращением
+    document.getElementById('zoomInBtn').addEventListener('click', function() {
+        scale *= 1.2;
+        updateTransform();
+    });
+    
+    document.getElementById('zoomOutBtn').addEventListener('click', function() {
+        scale /= 1.2;
+        updateTransform();
+    });
+    
+    document.getElementById('rotateLeftBtn').addEventListener('click', function() {
+        rotation -= 15;
+        updateTransform();
+    });
+    
+    document.getElementById('rotateRightBtn').addEventListener('click', function() {
+        rotation += 15;
+        updateTransform();
+    });
+    
+    document.getElementById('resetBtn').addEventListener('click', resetImage);
+    
+    // Обработка жестов на мобильных устройствах
+    const modalContent = document.querySelector('.modal-content');
+    
+    modalContent.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return; // Только левая кнопка мыши
+        isDraggingImage = true;
+        startPos = { x: e.clientX - translate.x, y: e.clientY - translate.y };
+        modalContent.style.cursor = 'grabbing';
+    });
+    
+    window.addEventListener('mousemove', function(e) {
+        if (!isDraggingImage) return;
+        translate.x = e.clientX - startPos.x;
+        translate.y = e.clientY - startPos.y;
+        updateTransform();
+    });
+    
+    window.addEventListener('mouseup', function() {
+        isDraggingImage = false;
+        modalContent.style.cursor = 'grab';
+    });
+    
+    // Touch events для мобильных устройств
+    modalContent.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+            // Одно касание - перемещение
+            isDraggingImage = true;
+            startPos = { 
+                x: e.touches[0].clientX - translate.x, 
+                y: e.touches[0].clientY - translate.y 
+            };
+        } else if (e.touches.length === 2) {
+            // Два касания - масштабирование/вращение
+            initialTouches = [e.touches[0], e.touches[1]];
+            lastDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+    }, { passive: false });
+    
+    modalContent.addEventListener('touchmove', function(e) {
+        if (isDraggingImage && e.touches.length === 1) {
+            // Перемещение
+            e.preventDefault();
+            translate.x = e.touches[0].clientX - startPos.x;
+            translate.y = e.touches[0].clientY - startPos.y;
+            updateTransform();
+        } else if (e.touches.length === 2) {
+            // Масштабирование/вращение
+            e.preventDefault();
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            
+            // Вычисляем текущее расстояние между пальцами
+            const currentDistance = Math.hypot(
+                touch1.clientX - touch2.clientX,
+                touch1.clientY - touch2.clientY
+            );
+            
+            // Масштабирование
+            if (lastDistance !== null) {
+                scale *= currentDistance / lastDistance;
+            }
+            lastDistance = currentDistance;
+            
+            // Вращение (опционально)
+            const initialAngle = Math.atan2(
+                initialTouches[1].clientY - initialTouches[0].clientY,
+                initialTouches[1].clientX - initialTouches[0].clientX
+            );
+            const currentAngle = Math.atan2(
+                touch2.clientY - touch1.clientY,
+                touch2.clientX - touch1.clientX
+            );
+            rotation = (currentAngle - initialAngle) * (180 / Math.PI);
+            
+            updateTransform();
+        }
+    }, { passive: false });
+    
+    modalContent.addEventListener('touchend', function() {
+        isDraggingImage = false;
+        lastDistance = null;
+        initialTouches = [];
+    });
+
+    // Адаптация скорости прокрутки
+    function adjustScrollSpeed() {
+        scrollSpeed = window.innerWidth < 768 ? 0.8 : 0.5;
+    }
+
+    // Обновление данных каждые 5 минут
+    function startDataUpdates() {
+        fetchTopGainers();
+        setInterval(fetchTopGainers, 5 * 60 * 1000);
+    }
+
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+        adjustScrollSpeed();
+        startDataUpdates();
+        window.addEventListener('resize', adjustScrollSpeed);
+        
+        // Инициализация курсора для перетаскивания
+        const modalImg = document.getElementById('modalImage');
+        if (modalImg) {
+            modalImg.style.cursor = 'grab';
+        }
+    });
+</script>
+</body> 
 </html>

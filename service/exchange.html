@@ -418,17 +418,26 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            touch-action: none;
         }
         
         .modal-content {
+            position: relative;
             max-width: 90%;
             max-height: 90%;
+            transform-origin: center center;
+            transition: transform 0.3s ease;
         }
         
         .modal-content img {
             width: 100%;
             height: auto;
+            max-height: 80vh;
             border-radius: 8px;
+            user-select: none;
+            -webkit-user-drag: none;
+            touch-action: none;
         }
         
         .close-modal {
@@ -438,6 +447,63 @@
             color: white;
             font-size: 2rem;
             cursor: pointer;
+            z-index: 1001;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .modal-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1001;
+        }
+        
+        .modal-btn {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .zoom-value {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 1001;
+        }
+        
+        .rotate-value {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 1001;
         }
     </style>
 </head>
@@ -483,7 +549,7 @@
                 </div>
             </div>
         </section>
-
+    
         <!-- Их прибыль - Наша прибыль! -->
         <section class="content-block">
             <h3>Гигантский рост - криптовалюта новые финансовые возможности</h3>
@@ -568,7 +634,7 @@
                 <p>Оставьте жалобу через систему – мы заморозим его репутацию и разберемся. Если проблема подтвердится, мы вернем средства и исключим брокера из системы.</p>
               </div>
             </div>
-  
+    
             <div class="faq-item">
               <div class="faq-question">
                 <span>Есть ли комиссия за использование платформы?</span>
@@ -578,7 +644,7 @@
                 <p>Нет, Asiento Cart не берет дополнительных комиссий – вы платите только по тарифу выбранного брокера.</p>
               </div>
             </div>
-  
+    
             <div class="faq-item">
               <div class="faq-question">
                 <span>Можно ли торговать напрямую, без посредников?</span>
@@ -588,7 +654,7 @@
                 <p>Нет, все сделки идут через нашу платформу – это единственный способ гарантировать безопасность. Но вы сами выбираете, с каким брокером работать.</p>
               </div>
             </div>
-  
+    
             <div class="faq-item">
               <div class="faq-question">
                 <span>Как работает система отзывов?</span>
@@ -621,6 +687,15 @@
       <div class="modal-content">
         <img id="modalImage" src="" alt="">
       </div>
+      <div class="modal-controls">
+        <button class="modal-btn" id="zoomInBtn">+</button>
+        <button class="modal-btn" id="zoomOutBtn">-</button>
+        <button class="modal-btn" id="rotateLeftBtn">↺</button>
+        <button class="modal-btn" id="rotateRightBtn">↻</button>
+        <button class="modal-btn" id="resetBtn">⟲</button>
+      </div>
+      <div class="zoom-value" id="zoomValue">100%</div>
+      <div class="rotate-value" id="rotateValue">0°</div>
     </div>
     
     <script>
@@ -807,6 +882,28 @@
         });
     
         // Управление модальным окном для изображений
+        let scale = 1;
+        let rotation = 0;
+        let isDraggingImage = false;
+        let startPos = { x: 0, y: 0 };
+        let translate = { x: 0, y: 0 };
+        let lastDistance = null;
+        let initialTouches = [];
+        
+        function updateTransform() {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.style.transform = `translate(${translate.x}px, ${translate.y}px) scale(${scale}) rotate(${rotation}deg)`;
+            document.getElementById('zoomValue').textContent = `${Math.round(scale * 100)}%`;
+            document.getElementById('rotateValue').textContent = `${rotation}°`;
+        }
+        
+        function resetImage() {
+            scale = 1;
+            rotation = 0;
+            translate = { x: 0, y: 0 };
+            updateTransform();
+        }
+        
         document.querySelectorAll('.zoomable-image').forEach(img => {
             img.addEventListener('click', function() {
                 const modal = document.getElementById('imageModal');
@@ -814,13 +911,14 @@
                 modal.style.display = 'flex';
                 modalImg.src = this.src;
                 modalImg.alt = this.alt;
+                resetImage();
             });
         });
-    
+        
         document.querySelector('.close-modal').addEventListener('click', function() {
             document.getElementById('imageModal').style.display = 'none';
         });
-    
+        
         // Закрытие модального окна при клике вне изображения
         window.addEventListener('click', function(event) {
             const modal = document.getElementById('imageModal');
@@ -828,13 +926,125 @@
                 modal.style.display = 'none';
             }
         });
+        
+    // Управление масштабом и вращением
+    document.getElementById('zoomInBtn').addEventListener('click', function() {
+        scale *= 1.2;
+        updateTransform();
+    });
     
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchTopGainers();
-            // Обновляем данные каждые 5 минут
-            setInterval(fetchTopGainers, 5 * 60 * 1000);
-        });
-    </script>
-</body> 
-</html>
+    document.getElementById('zoomOutBtn').addEventListener('click', function() {
+        scale /= 1.2;
+        updateTransform();
+    });
+    
+    document.getElementById('rotateLeftBtn').addEventListener('click', function() {
+        rotation -= 15;
+        updateTransform();
+    });
+    
+    document.getElementById('rotateRightBtn').addEventListener('click', function() {
+        rotation += 15;
+        updateTransform();
+    });
+    
+    document.getElementById('resetBtn').addEventListener('click', resetImage);
+    
+    // Обработка жестов на мобильных устройствах
+    const modalContent = document.querySelector('.modal-content');
+    
+    modalContent.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return; // Только левая кнопка мыши
+        isDraggingImage = true;
+        startPos = { x: e.clientX - translate.x, y: e.clientY - translate.y };
+        modalContent.style.cursor = 'grabbing';
+    });
+    
+    window.addEventListener('mousemove', function(e) {
+        if (!isDraggingImage) return;
+        translate.x = e.clientX - startPos.x;
+        translate.y = e.clientY - startPos.y;
+        updateTransform();
+    });
+    
+    window.addEventListener('mouseup', function() {
+        isDraggingImage = false;
+        modalContent.style.cursor = 'grab';
+    });
+    
+    // Touch events для мобильных устройств
+    modalContent.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+            // Одно касание - перемещение
+            isDraggingImage = true;
+            startPos = { 
+                x: e.touches[0].clientX - translate.x, 
+                y: e.touches[0].clientY - translate.y 
+            };
+        } else if (e.touches.length === 2) {
+            // Два касания - масштабирование/вращение
+            initialTouches = [e.touches[0], e.touches[1]];
+            lastDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+    }, { passive: false });
+    
+    modalContent.addEventListener('touchmove', function(e) {
+        if (isDraggingImage && e.touches.length === 1) {
+            // Перемещение
+            e.preventDefault();
+            translate.x = e.touches[0].clientX - startPos.x;
+            translate.y = e.touches[0].clientY - startPos.y;
+            updateTransform();
+        } else if (e.touches.length === 2) {
+            // Масштабирование/вращение
+            e.preventDefault();
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            
+            // Вычисляем текущее расстояние между пальцами
+            const currentDistance = Math.hypot(
+                touch1.clientX - touch2.clientX,
+                touch1.clientY - touch2.clientY
+            );
+            
+            // Масштабирование
+            if (lastDistance !== null) {
+                scale *= currentDistance / lastDistance;
+            }
+            lastDistance = currentDistance;
+            
+            // Вращение (опционально)
+            const initialAngle = Math.atan2(
+                initialTouches[1].clientY - initialTouches[0].clientY,
+                initialTouches[1].clientX - initialTouches[0].clientX
+            );
+            const currentAngle = Math.atan2(
+                touch2.clientY - touch1.clientY,
+                touch2.clientX - touch1.clientX
+            );
+            rotation = (currentAngle - initialAngle) * (180 / Math.PI);
+            
+            updateTransform();
+        }
+    }, { passive: false });
+    
+    modalContent.addEventListener('touchend', function() {
+        isDraggingImage = false;
+        lastDistance = null;
+        initialTouches = [];
+    });
+    
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchTopGainers();
+        // Обновляем данные каждые 5 минут
+        setInterval(fetchTopGainers, 5 * 60 * 1000);
+        
+        // Инициализация курсора для перетаскивания
+        const modalImg = document.getElementById('modalImage');
+        modalImg.style.cursor = 'grab';
+    });
+</script>
