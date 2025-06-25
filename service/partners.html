@@ -772,14 +772,77 @@
       </div>
       
       <footer>
-          <div class="legal-notice">
-            <p>&copy; 2025 Asiento Cart. <br> Цифровые финансовые активы не являются платежным средством в РФ. Просим ознокомиться с: </p>
-            <div class="law-references">
-              <a href="https://www.consultant.ru/document/cons_doc_LAW_358753/" target="_blank">ФЗ-259</a>
-              <a href="https://www.consultant.ru/document/cons_doc_LAW_32834/" target="_blank">ФЗ-115</a>
+        <div class="legal-notice">
+            <p>&copy; 2025 Asiento Cart. Цифровые финансовые активы не являются платежным средством в РФ.</p>
+            <div class="footer-links">
+                <a href="service/conf.html">Политика конфиденциальности и использования</a>
+                <div class="law-references">
+                    <a href="https://www.consultant.ru/document/cons_doc_LAW_358753/" target="_blank" rel="noopener noreferrer">ФЗ-259</a>
+                    <a href="https://www.consultant.ru/document/cons_doc_LAW_32834/" target="_blank" rel="noopener noreferrer">ФЗ-115</a>
+                </div>
             </div>
-          </div>
-        </footer>
+        </div>
+    </footer>
+    
+    <style>
+        footer {
+            background: #111;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .legal-notice {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .legal-notice p {
+            color: var(--gray);
+            font-size: clamp(0.8rem, 2.5vw, 0.85rem);
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            transition: opacity 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+        
+        .law-references {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 480px) {
+            .footer-links {
+                flex-direction: column;
+            }
+            
+            .law-references {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
       
       <!-- Модальное окно для изображений -->
       <div class="image-modal" id="imageModal">
