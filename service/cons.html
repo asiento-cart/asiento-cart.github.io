@@ -265,17 +265,15 @@
             box-shadow: 0 12px 30px rgba(58, 123, 255, 0.5);
         }
         
-        .telegram-icon {
-            width: 22px;
-            height: 22px;
-            fill: white;
-        }
 
-        /* График */
+
+        /* ГРАФИК — стабилизированный контейнер */
         .chart-container {
             position: relative;
             width: 100%;
             margin: 20px 0 10px;
+            /* фиксируем минимальную высоту, чтобы при ресайзе не прыгало содержимое */
+            min-height: 280px;
         }
         
         canvas {
@@ -347,6 +345,7 @@
             .badge { font-size: 0.8rem; }
             .disclaimer-block { padding: 16px 18px; }
             .contact-button { padding: 12px 28px; font-size: 1rem; }
+            .chart-container { min-height: 260px; }
             canvas { max-height: 320px; }
         }
         
@@ -363,17 +362,22 @@
             .expense-list li { flex-direction: column; align-items: flex-start; }
             .chart-note { text-align: left; }
             .legal-notice p { font-size: 0.8rem; }
+            .chart-container { min-height: 220px; }
+            canvas { max-height: 260px; }
         }
 
         /* Для очень маленьких экранов */
         @media (max-width: 360px) {
             .portfolio-table { min-width: 320px; }
             .allocation-bar { width: 40px !important; }
+            .chart-container { min-height: 200px; }
+            canvas { max-height: 220px; }
         }
 
         /* Планшеты и средние экраны */
         @media (min-width: 769px) and (max-width: 1024px) {
             .content-block { padding: 28px 24px; }
+            .chart-container { min-height: 320px; }
             canvas { max-height: 380px; }
         }
 
@@ -551,11 +555,8 @@
 
         <!-- Кнопка связи -->
         <div class="contact-button-container">
-            <a href="https://t.me/asiento_ch" class="contact-button" target="_blank" rel="noopener noreferrer">
-                <svg class="telegram-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.15-.06-.21s-.17-.04-.25-.02c-.11.03-1.84 1.17-5.2 3.44-.49.33-.94.49-1.35.48-.45-.01-1.32-.26-1.97-.47-.79-.26-1.42-.4-1.37-.84.03-.27.32-.55.89-.84 3.5-1.55 5.83-2.6 6.93-3.12 3.14-1.5 3.79-1.76 4.22-1.77.1 0 .32.02.46.12.11.08.14.19.15.27-.01.06.01.28 0 .49z"/>
-                </svg>
-                Связаться в Telegram
+            <a href="https://vk.com/asiento" class="contact-button" target="_blank" rel="noopener noreferrer">
+                Связаться в ВК
             </a>
         </div>
 
@@ -621,6 +622,10 @@
 
             const portfolioPercent = portfolio.map(v => v * 100);
             const indexPercent = index.map(v => v * 100);
+            
+            // Фиксированные границы оси Y, чтобы шкала не прыгала при ресайзе
+            const minY = Math.min(...portfolioPercent, ...indexPercent) - 5;
+            const maxY = Math.max(...portfolioPercent, ...indexPercent) + 5;
 
             const ctx = document.getElementById('performanceChart').getContext('2d');
             
@@ -645,10 +650,12 @@
                             borderWidth: 3,
                             pointBackgroundColor: '#3a7bff',
                             pointBorderColor: '#121212',
-                            pointRadius: 3,
-                            pointHoverRadius: 6,
+                            pointRadius: window.innerWidth < 768 ? 2 : 3,   // меньше точек на мобильных
+                            pointHoverRadius: window.innerWidth < 768 ? 4 : 6,
                             tension: 0.3,
-                            fill: true
+                            fill: true,
+                            // отключаем анимацию точек
+                            animation: false
                         },
                         {
                             label: 'Индекс МосБиржи',
@@ -659,16 +666,19 @@
                             borderDash: [5, 3],
                             pointBackgroundColor: '#bbbbbb',
                             pointBorderColor: '#121212',
-                            pointRadius: 2.5,
-                            pointHoverRadius: 5,
+                            pointRadius: window.innerWidth < 768 ? 1.5 : 2.5,
+                            pointHoverRadius: window.innerWidth < 768 ? 3 : 5,
                             tension: 0.3,
-                            fill: true
+                            fill: true,
+                            animation: false
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
+                    // ПОЛНОСТЬЮ ОТКЛЮЧАЕМ АНИМАЦИЮ (главная причина "дёрганья")
+                    animation: false,
                     plugins: {
                         legend: {
                             labels: {
@@ -706,6 +716,9 @@
                             }
                         },
                         y: {
+                            // ФИКСИРОВАННЫЕ ГРАНИЦЫ — цифры не прыгают при ресайзе
+                            min: minY,
+                            max: maxY,
                             grid: { color: 'rgba(255,255,255,0.08)' },
                             ticks: { 
                                 color: '#bbbbbb',
@@ -723,20 +736,37 @@
                         mode: 'nearest',
                         axis: 'x',
                         intersect: false
-                    }
+                    },
+                    // Дополнительно отключаем эффекты "ресайз-анимации"
+                    resizeDelay: 0
                 }
             });
 
-            // FAQ раскрытие (клик)
+            // FAQ раскрытие (клик) – улучшено для тач-устройств
             document.querySelectorAll('.content-block:last-of-type > div > div').forEach(item => {
                 const q = item.querySelector('div:first-child');
                 const a = item.querySelector('div:last-child');
                 if (q && a) {
                     q.style.cursor = 'pointer';
-                    q.addEventListener('click', () => {
-                        a.style.display = a.style.display === 'none' ? 'block' : 'none';
-                        q.style.opacity = a.style.display === 'none' ? '1' : '0.8';
+                    q.addEventListener('click', (e) => {
+                        // предотвращаем всплытие, чтобы случайно не закрыть что-то ещё
+                        e.stopPropagation();
+                        const isHidden = a.style.display === 'none';
+                        a.style.display = isHidden ? 'block' : 'none';
+                        q.style.opacity = isHidden ? '0.8' : '1';
                     });
+                    // для мобильных: начальное состояние — всё открыто (можно оставить как есть)
+                    a.style.display = 'block';
+                }
+            });
+
+            // Дополнительно: принудительно обновляем график после полной загрузки, чтобы он сразу подстроился
+            window.addEventListener('load', () => {
+                // небольшой костыль: если canvas ещё не отрисован — Chart.js сам всё сделает,
+                // но на всякий случай принудительно обновляем (без анимации)
+                const chart = Chart.getChart('performanceChart');
+                if (chart) {
+                    chart.update('none'); // 'none' — без анимации
                 }
             });
         })();
