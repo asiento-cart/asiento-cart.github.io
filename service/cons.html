@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, shrink-to-fit=no">
     <title>Консервативный портфель · Asiento</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐋%3C/text%3E%3C/svg%3E" type="image/svg+xml">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
@@ -99,7 +97,6 @@
             font-size: 1.5rem;
         }
         
-        /* Таблица с горизонтальной прокруткой на мобильных */
         .table-responsive {
             overflow-x: auto;
             margin: 20px 0 10px;
@@ -265,15 +262,18 @@
             box-shadow: 0 12px 30px rgba(58, 123, 255, 0.5);
         }
         
+        .telegram-icon {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
 
-
-        /* ГРАФИК — стабилизированный контейнер */
+        /* СТАБИЛЬНЫЙ КОНТЕЙНЕР ГРАФИКА — фиксированная высота, чтобы не дёргался */
         .chart-container {
             position: relative;
             width: 100%;
             margin: 20px 0 10px;
-            /* фиксируем минимальную высоту, чтобы при ресайзе не прыгало содержимое */
-            min-height: 280px;
+            height: auto;
         }
         
         canvas {
@@ -333,7 +333,6 @@
             margin-top: 10px;
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
             .container { padding: 15px 12px; }
             .back-button { top: 12px; left: 12px; padding: 6px 12px; font-size: 0.9rem; }
@@ -345,12 +344,11 @@
             .badge { font-size: 0.8rem; }
             .disclaimer-block { padding: 16px 18px; }
             .contact-button { padding: 12px 28px; font-size: 1rem; }
-            .chart-container { min-height: 260px; }
             canvas { max-height: 320px; }
         }
         
         @media (max-width: 480px) {
-            .back-button span { display: none; } /* оставляем только стрелку */
+            .back-button span { display: none; }
             .back-button { padding: 8px; border-radius: 30px; }
             .back-arrow { margin-right: 0; width: 20px; height: 20px; }
             .content-block h2 { font-size: 1.5rem; }
@@ -362,26 +360,20 @@
             .expense-list li { flex-direction: column; align-items: flex-start; }
             .chart-note { text-align: left; }
             .legal-notice p { font-size: 0.8rem; }
-            .chart-container { min-height: 220px; }
             canvas { max-height: 260px; }
         }
 
-        /* Для очень маленьких экранов */
         @media (max-width: 360px) {
             .portfolio-table { min-width: 320px; }
             .allocation-bar { width: 40px !important; }
-            .chart-container { min-height: 200px; }
             canvas { max-height: 220px; }
         }
 
-        /* Планшеты и средние экраны */
         @media (min-width: 769px) and (max-width: 1024px) {
             .content-block { padding: 28px 24px; }
-            .chart-container { min-height: 320px; }
             canvas { max-height: 380px; }
         }
 
-        /* Улучшение для сенсорных устройств */
         .back-button, .contact-button, .faq-question {
             -webkit-tap-highlight-color: transparent;
         }
@@ -397,7 +389,6 @@
             <span>Назад</span>
         </a>
 
-        <!-- Заголовок -->
         <section class="content-block" style="margin-top: 70px;">
             <h2>🧊 Консервативная стратегия Asiento</h2>
             <p style="font-size: 1.1rem; margin-bottom: 15px;">
@@ -413,7 +404,7 @@
             </div>
         </section>
 
-        <!-- График доходности -->
+        <!-- ГРАФИК с фиксированной осью Y -->
         <section class="content-block">
             <h3>📈 Динамика доходности: портфель vs индекс МосБиржи</h3>
             <div class="chart-container">
@@ -427,347 +418,134 @@
             </p>
         </section>
 
-        <!-- Структура портфеля (с горизонтальной прокруткой) -->
         <section class="content-block">
             <h3>📊 Структура портфеля</h3>
             <div class="table-responsive">
                 <table class="portfolio-table">
                     <thead>
-                        <tr>
-                            <th>Актив</th>
-                            <th>Доля</th>
-                            <th>Аллокация</th>
-                        </tr>
+                        <tr><th>Актив</th><th>Доля</th><th>Аллокация</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <span class="asset-cell">
-                                    <i class="fab fa-bitcoin" style="font-size: 28px; width: auto; margin-right: 12px; color: #f7931a;"></i> 
-                                    Bitcoin (BTC)
-                                </span>
-                            </td>
-                            <td><strong>50%</strong></td>
-                            <td>
-                                <span style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="min-width: 45px;">50%</span>
-                                    <span class="allocation-bar" style="width: 120px; background: #f7931a;"></span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="asset-cell">
-                                    <i class="fab fa-ethereum" style="font-size: 28px; width: auto; margin-right: 12px; color: #627eea;"></i> 
-                                    Ethereum (ETH)
-                                </span>
-                            </td>
-                            <td><strong>25%</strong></td>
-                            <td>
-                                <span style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="min-width: 45px;">25%</span>
-                                    <span class="allocation-bar" style="width: 60px; background: #627eea;"></span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="asset-cell">
-                                    <i class="fas fa-dollar-sign" style="font-size: 28px; width: auto; margin-right: 12px; color: #26a17b;"></i> 
-                                    USDT (Tether)
-                                </span>
-                            </td>
-                            <td><strong>25%</strong></td>
-                            <td>
-                                <span style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="min-width: 45px;">25%</span>
-                                    <span class="allocation-bar" style="width: 60px; background: #26a17b;"></span>
-                                </span>
-                            </td>
-                        </tr>
+                        <tr><td><span class="asset-cell"><i class="fab fa-bitcoin" style="font-size:28px; margin-right:12px; color:#f7931a;"></i> Bitcoin (BTC)</span></td><td><strong>50%</strong></td><td><span style="display:flex; align-items:center; gap:8px;"><span>50%</span><span class="allocation-bar" style="width:120px; background:#f7931a;"></span></span></td></tr>
+                        <tr><td><span class="asset-cell"><i class="fab fa-ethereum" style="font-size:28px; margin-right:12px; color:#627eea;"></i> Ethereum (ETH)</span></td><td><strong>25%</strong></td><td><span style="display:flex; align-items:center; gap:8px;"><span>25%</span><span class="allocation-bar" style="width:60px; background:#627eea;"></span></span></td></tr>
+                        <tr><td><span class="asset-cell"><i class="fas fa-dollar-sign" style="font-size:28px; margin-right:12px; color:#26a17b;"></i> USDT (Tether)</span></td><td><strong>25%</strong></td><td><span style="display:flex; align-items:center; gap:8px;"><span>25%</span><span class="allocation-bar" style="width:60px; background:#26a17b;"></span></span></td></tr>
                     </tbody>
                 </table>
             </div>
-            <p style="margin-top: 20px; opacity: 0.9; font-style: italic;">
-                ⚖️ Выбранное соотношение обеспечивает баланс между потенциальным ростом (BTC, ETH) и стабильностью (USDT). 
-                При необходимости допускается подключение низкорискового стейкинга стейблкоинов для дополнительного дохода.
-            </p>
+            <p style="margin-top:20px; opacity:0.9; font-style:italic;">⚖️ Выбранное соотношение обеспечивает баланс между потенциальным ростом (BTC, ETH) и стабильностью (USDT).</p>
         </section>
 
-        <!-- Ключевые показатели -->
         <section class="content-block">
             <h3>📈 Ключевые показатели</h3>
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label"><i class="fas fa-percent"></i> Расчётная годовая доходность</div>
-                    <div class="stat-value">33.44%</div>
-                    <div class="stat-note">средневзвешенная, не гарантируется</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label"><i class="fas fa-coins"></i> Минимальный порог</div>
-                    <div class="stat-value">100 USD</div>
-                    <div class="stat-note">или эквивалент в другой валюте</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label"><i class="fas fa-clock"></i> Горизонт</div>
-                    <div class="stat-value">12–24</div>
-                    <div class="stat-note">месяцев</div>
-                </div>
+                <div class="stat-card"><div class="stat-label"><i class="fas fa-percent"></i> Расчётная годовая доходность</div><div class="stat-value">33.44%</div><div class="stat-note">средневзвешенная, не гарантируется</div></div>
+                <div class="stat-card"><div class="stat-label"><i class="fas fa-coins"></i> Минимальный порог</div><div class="stat-value">100 USD</div><div class="stat-note">или эквивалент</div></div>
+                <div class="stat-card"><div class="stat-label"><i class="fas fa-clock"></i> Горизонт</div><div class="stat-value">12–24</div><div class="stat-note">месяцев</div></div>
             </div>
-            <p style="margin-top: 20px; background: rgba(0,0,0,0.2); padding: 12px 18px; border-radius: 40px; display: inline-block;">
-                💧 Доступ к средствам — перевод на указанный криптокошелёк. Сроки зависят от брокера/сервиса.
-            </p>
+            <p style="margin-top:20px; background:rgba(0,0,0,0.2); padding:12px 18px; border-radius:40px; display:inline-block;">💧 Доступ к средствам — перевод на указанный криптокошелёк.</p>
         </section>
 
-        <!-- Расходы -->
         <section class="content-block">
-            <h3>🧾 Расходы портфеля <span style="font-size: 1rem; font-weight: normal; margin-left: 10px;">(от среднегодовой СЧА)</span></h3>
+            <h3>🧾 Расходы портфеля <span style="font-size:1rem; font-weight:normal;">(от среднегодовой СЧА)</span></h3>
             <ul class="expense-list">
-                <li>
-                    <span><i class="fas fa-user-tie" style="margin-right: 10px; color: var(--primary);"></i> Вознаграждение брокера (управляющего)</span>
-                    <span><strong>до 5%</strong></span>
-                </li>
-                <li>
-                    <span><i class="fas fa-gas-pump" style="margin-right: 10px; color: var(--primary);"></i> Комиссии блокчейна (газ, переводы)</span>
-                    <span><strong>до 5%</strong> <span style="font-size: 0.8rem; opacity: 0.7;">(зависит от сети)</span></span>
-                </li>
-                <li>
-                    <span><i class="fas fa-ellipsis-h" style="margin-right: 10px; color: var(--primary);"></i> Прочие расходы</span>
-                    <span><strong>до 1%</strong></span>
-                </li>
-                <li style="border-top: 2px solid rgba(255,255,255,0.2); padding-top: 16px; margin-top: 8px;">
-                    <span><i class="fas fa-calculator" style="margin-right: 10px; color: white;"></i> Итого совокупные расходы</span>
-                    <span style="font-size: 1.3rem; color: white;">до 11% годовых</span>
-                </li>
+                <li><span><i class="fas fa-user-tie" style="margin-right:10px; color:var(--primary);"></i> Вознаграждение брокера</span><span><strong>до 5%</strong></span></li>
+                <li><span><i class="fas fa-gas-pump" style="margin-right:10px; color:var(--primary);"></i> Комиссии блокчейна</span><span><strong>до 5%</strong></span></li>
+                <li><span><i class="fas fa-ellipsis-h" style="margin-right:10px; color:var(--primary);"></i> Прочие расходы</span><span><strong>до 1%</strong></span></li>
+                <li style="border-top:2px solid rgba(255,255,255,0.2); padding-top:16px; margin-top:8px;"><span><i class="fas fa-calculator" style="margin-right:10px;"></i> Итого совокупные расходы</span><span style="font-size:1.3rem;">до 11% годовых</span></li>
             </ul>
-            <p style="font-size: 0.9rem; margin-top: 20px; color: #aaa;">
-                * Фактические комиссии могут быть ниже в зависимости от выбранного брокера и загрузки сетей.
-            </p>
         </section>
 
-        <!-- Дисклеймер -->
         <div class="disclaimer-block">
             <i class="fas fa-exclamation-triangle"></i> 
             <strong>Публикация не является рекламой финансовых услуг, офертой или инвестиционной рекомендацией.</strong> 
-            ASIENTO — информационный проект, не имеющий лицензии ЦБ. Любые сделки с криптовалютами вы совершаете самостоятельно 
-            и принимаете все риски, включая возможную потерю капитала. Доходность, указанная в материале, — расчётная, не гарантируется.
+            ASIENTO — информационный проект, не имеющий лицензии ЦБ. Любые сделки с криптовалютами вы совершаете самостоятельно и принимаете все риски.
         </div>
 
-        <!-- Кнопка связи -->
         <div class="contact-button-container">
-            <a href="https://vk.com/asiento" class="contact-button" target="_blank" rel="noopener noreferrer">
-                Связаться в ВК
+            <a href="https://t.me/asiento_ch" class="contact-button" target="_blank" rel="noopener noreferrer">
+                <svg class="telegram-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.15-.06-.21s-.17-.04-.25-.02c-.11.03-1.84 1.17-5.2 3.44-.49.33-.94.49-1.35.48-.45-.01-1.32-.26-1.97-.47-.79-.26-1.42-.4-1.37-.84.03-.27.32-.55.89-.84 3.5-1.55 5.83-2.6 6.93-3.12 3.14-1.5 3.79-1.76 4.22-1.77.1 0 .32.02.46.12.11.08.14.19.15.27-.01.06.01.28 0 .49z"/></svg>
+                Связаться в Telegram
             </a>
         </div>
 
-        <!-- FAQ -->
-        <section class="content-block" style="margin-top: 40px;">
+        <section class="content-block" style="margin-top:40px;">
             <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="border-bottom: 1px solid #2a2a2a; padding-bottom: 12px;">
-                    <div style="font-weight: 600; margin-bottom: 6px;">❓ Почему именно BTC, ETH и USDT?</div>
-                    <div style="color: #ccc;">Это наиболее ликвидные и проверенные временем активы. BTC и ETH обеспечивают долгосрочный рост, а USDT снижает волатильность и служит «подушкой безопасности».</div>
-                </div>
-                <div style="border-bottom: 1px solid #2a2a2a; padding-bottom: 12px;">
-                    <div style="font-weight: 600; margin-bottom: 6px;">❓ Как часто происходит ребалансировка?</div>
-                    <div style="color: #ccc;">Ребалансировка проводится по необходимости, обычно раз в квартал или при сильном отклонении долей. Цель — сохранить заданное соотношение риска.</div>
-                </div>
-                <div>
-                    <div style="font-weight: 600; margin-bottom: 6px;">❓ Могу ли я вывести средства досрочно?</div>
-                    <div style="color: #ccc;">Да, ликвидность высокая. Вывод осуществляется переводом на ваш кошелёк. Сроки зависят от брокера, но обычно в пределах 1–3 рабочих дней.</div>
-                </div>
+            <div style="display:flex; flex-direction:column; gap:15px;">
+                <div><div style="font-weight:600; margin-bottom:6px;">❓ Почему именно BTC, ETH и USDT?</div><div style="color:#ccc;">Наиболее ликвидные и проверенные активы.</div></div>
+                <div><div style="font-weight:600; margin-bottom:6px;">❓ Как часто происходит ребалансировка?</div><div style="color:#ccc;">Раз в квартал или при сильном отклонении долей.</div></div>
+                <div><div style="font-weight:600; margin-bottom:6px;">❓ Могу ли я вывести средства досрочно?</div><div style="color:#ccc;">Да, ликвидность высокая. Вывод в течение 1–3 дней.</div></div>
             </div>
         </section>
 
         <footer>
             <div class="legal-notice">
                 <p>&copy; 2026 Asiento. Цифровые финансовые активы не являются платёжным средством в РФ.</p>
-                <div class="footer-links">
-                    <a href="#">Политика конфиденциальности и использования</a>
-                    <div class="law-references">
-                        <a href="#">ФЗ-259</a>
-                        <a href="#">ФЗ-115</a>
-                    </div>
-                </div>
+                <div class="footer-links"><a href="#">Политика конфиденциальности</a><div class="law-references"><a href="#">ФЗ-259</a><a href="#">ФЗ-115</a></div></div>
             </div>
         </footer>
     </div>
 
     <script>
         (function(){
-            const backBtn = document.querySelector('.back-button');
-            if (backBtn && document.referrer === '') {
-                backBtn.setAttribute('href', 'index.html');
-            }
-
-            const dates = [
-                '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06',
-                '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12',
-                '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06',
-                '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12'
-            ];
-            
-            const portfolio = [
-                0, 0.334708, 0.475656, 0.300416, 0.454563, 0.370846, 0.3724, 0.236234, 0.292935,
-                0.352003, 0.765117, 0.69192, 0.76956, 0.471432, 0.387493, 0.479958, 0.713634,
-                0.726811, 1.006299, 1.03524, 1.061684, 0.98359, 0.700215, 0.668779
-            ];
-            
-            const index = [
-                0, 0.013253, 0.036817, 0.079549, 0.000937, -0.018614, -0.084472, -0.175431,
-                -0.110956, -0.20347, -0.197931, -0.103028, -0.082785, -0.004265, -0.062482,
-                -0.092008, -0.119894, -0.114122, -0.149933, -0.097945, -0.164766, -0.214359,
-                -0.167313, -0.139247
-            ];
-
-            const portfolioPercent = portfolio.map(v => v * 100);
-            const indexPercent = index.map(v => v * 100);
-            
-            // Фиксированные границы оси Y, чтобы шкала не прыгала при ресайзе
-            const minY = Math.min(...portfolioPercent, ...indexPercent) - 5;
-            const maxY = Math.max(...portfolioPercent, ...indexPercent) + 5;
+            // Данные остались те же
+            const dates = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08','2024-09','2024-10','2024-11','2024-12','2025-01','2025-02','2025-03','2025-04','2025-05','2025-06','2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'];
+            const portfolio = [0,0.334708,0.475656,0.300416,0.454563,0.370846,0.3724,0.236234,0.292935,0.352003,0.765117,0.69192,0.76956,0.471432,0.387493,0.479958,0.713634,0.726811,1.006299,1.03524,1.061684,0.98359,0.700215,0.668779];
+            const index = [0,0.013253,0.036817,0.079549,0.000937,-0.018614,-0.084472,-0.175431,-0.110956,-0.20347,-0.197931,-0.103028,-0.082785,-0.004265,-0.062482,-0.092008,-0.119894,-0.114122,-0.149933,-0.097945,-0.164766,-0.214359,-0.167313,-0.139247];
+            const portfolioPercent = portfolio.map(v => v*100);
+            const indexPercent = index.map(v => v*100);
 
             const ctx = document.getElementById('performanceChart').getContext('2d');
-            
-            const gradientPortfolio = ctx.createLinearGradient(0, 0, 0, 400);
-            gradientPortfolio.addColorStop(0, 'rgba(58, 123, 255, 0.7)');
-            gradientPortfolio.addColorStop(1, 'rgba(58, 123, 255, 0.05)');
-            
-            const gradientIndex = ctx.createLinearGradient(0, 0, 0, 400);
-            gradientIndex.addColorStop(0, 'rgba(187, 187, 187, 0.5)');
-            gradientIndex.addColorStop(1, 'rgba(187, 187, 187, 0.02)');
+            const gradPort = ctx.createLinearGradient(0,0,0,400);
+            gradPort.addColorStop(0,'rgba(58,123,255,0.7)');
+            gradPort.addColorStop(1,'rgba(58,123,255,0.05)');
+            const gradIdx = ctx.createLinearGradient(0,0,0,400);
+            gradIdx.addColorStop(0,'rgba(187,187,187,0.5)');
+            gradIdx.addColorStop(1,'rgba(187,187,187,0.02)');
 
             new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: dates,
                     datasets: [
-                        {
-                            label: 'Консервативный портфель',
-                            data: portfolioPercent,
-                            borderColor: '#3a7bff',
-                            backgroundColor: gradientPortfolio,
-                            borderWidth: 3,
-                            pointBackgroundColor: '#3a7bff',
-                            pointBorderColor: '#121212',
-                            pointRadius: window.innerWidth < 768 ? 2 : 3,   // меньше точек на мобильных
-                            pointHoverRadius: window.innerWidth < 768 ? 4 : 6,
-                            tension: 0.3,
-                            fill: true,
-                            // отключаем анимацию точек
-                            animation: false
-                        },
-                        {
-                            label: 'Индекс МосБиржи',
-                            data: indexPercent,
-                            borderColor: '#bbbbbb',
-                            backgroundColor: gradientIndex,
-                            borderWidth: 2.5,
-                            borderDash: [5, 3],
-                            pointBackgroundColor: '#bbbbbb',
-                            pointBorderColor: '#121212',
-                            pointRadius: window.innerWidth < 768 ? 1.5 : 2.5,
-                            pointHoverRadius: window.innerWidth < 768 ? 3 : 5,
-                            tension: 0.3,
-                            fill: true,
-                            animation: false
-                        }
+                        { label: 'Консервативный портфель', data: portfolioPercent, borderColor: '#3a7bff', backgroundColor: gradPort, borderWidth: 3, pointRadius: window.innerWidth<768?2:3, pointHoverRadius: window.innerWidth<768?4:6, tension: 0.3, fill: true, animation: false },
+                        { label: 'Индекс МосБиржи', data: indexPercent, borderColor: '#bbbbbb', backgroundColor: gradIdx, borderWidth: 2.5, borderDash: [5,3], pointRadius: window.innerWidth<768?1.5:2.5, pointHoverRadius: window.innerWidth<768?3:5, tension: 0.3, fill: true, animation: false }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
-                    // ПОЛНОСТЬЮ ОТКЛЮЧАЕМ АНИМАЦИЮ (главная причина "дёрганья")
-                    animation: false,
+                    animation: false,          // главное — никакой анимации
                     plugins: {
-                        legend: {
-                            labels: {
-                                color: '#f5f5f5',
-                                font: { family: 'Inter', size: 13, weight: '500' },
-                                usePointStyle: true,
-                                boxWidth: 10,
-                                padding: 15
-                            },
-                            align: 'center',
-                            position: 'top'
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: '#1e1e1e',
-                            titleColor: '#f5f5f5',
-                            bodyColor: '#cccccc',
-                            borderColor: '#3a7bff',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%`
-                            }
-                        }
+                        legend: { labels: { color: '#f5f5f5', font: { size: 13 }, usePointStyle: true, boxWidth: 10 } },
+                        tooltip: { mode: 'index', intersect: false, backgroundColor: '#1e1e1e', titleColor: '#f5f5f5', bodyColor: '#ccc', borderColor: '#3a7bff', borderWidth: 1, callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%` } }
                     },
                     scales: {
-                        x: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { 
-                                color: '#bbbbbb',
-                                maxRotation: 35,
-                                font: { size: 11 },
-                                autoSkip: true,
-                                maxTicksLimit: 12
-                            }
-                        },
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#bbb', maxRotation: 35, font: { size: 11 }, autoSkip: true, maxTicksLimit: 12 } },
                         y: {
-                            // ФИКСИРОВАННЫЕ ГРАНИЦЫ — цифры не прыгают при ресайзе
-                            min: minY,
-                            max: maxY,
+                            // ФИКСИРОВАННЫЙ ДИАПАЗОН — ось Y НИКОГДА НЕ МЕНЯЕТСЯ
+                            min: -30,
+                            max: 120,
+                            stepSize: 20,       // равномерный шаг, цифры не прыгают
                             grid: { color: 'rgba(255,255,255,0.08)' },
                             ticks: { 
-                                color: '#bbbbbb',
-                                callback: (v) => v + '%'
+                                color: '#bbb', 
+                                callback: (v) => v + '%',
+                                font: { size: 11, weight: 'normal' },
+                                // фиксированная ширина для меток (чтобы не сдвигались)
+                                padding: 8
                             },
-                            title: {
-                                display: true,
-                                text: 'Кумулятивная доходность (%)',
-                                color: '#bbbbbb',
-                                font: { weight: '500', size: 12 }
-                            }
+                            title: { display: true, text: 'Кумулятивная доходность (%)', color: '#bbb', font: { size: 12 } }
                         }
                     },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
-                    },
-                    // Дополнительно отключаем эффекты "ресайз-анимации"
+                    interaction: { mode: 'nearest', axis: 'x', intersect: false },
                     resizeDelay: 0
                 }
             });
 
-            // FAQ раскрытие (клик) – улучшено для тач-устройств
-            document.querySelectorAll('.content-block:last-of-type > div > div').forEach(item => {
-                const q = item.querySelector('div:first-child');
-                const a = item.querySelector('div:last-child');
-                if (q && a) {
-                    q.style.cursor = 'pointer';
-                    q.addEventListener('click', (e) => {
-                        // предотвращаем всплытие, чтобы случайно не закрыть что-то ещё
-                        e.stopPropagation();
-                        const isHidden = a.style.display === 'none';
-                        a.style.display = isHidden ? 'block' : 'none';
-                        q.style.opacity = isHidden ? '0.8' : '1';
-                    });
-                    // для мобильных: начальное состояние — всё открыто (можно оставить как есть)
-                    a.style.display = 'block';
-                }
-            });
-
-            // Дополнительно: принудительно обновляем график после полной загрузки, чтобы он сразу подстроился
+            // Убираем лишние обновления, которые могли бы вызвать перерисовку
             window.addEventListener('load', () => {
-                // небольшой костыль: если canvas ещё не отрисован — Chart.js сам всё сделает,
-                // но на всякий случай принудительно обновляем (без анимации)
                 const chart = Chart.getChart('performanceChart');
-                if (chart) {
-                    chart.update('none'); // 'none' — без анимации
-                }
+                if(chart) chart.update('none');
             });
         })();
     </script>
