@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, shrink-to-fit=no">
+    <title>Консервативный портфель · Asiento</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐋%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #3a7bff;
+            --dark: #121212;
+            --dark-gray: #1e1e1e;
+            --light: #f5f5f5;
+            --gray: #bbbbbb;
+            --green: #4caf50;
+            --red: #7e7e7e;
+            --card-bg: rgba(30, 30, 30, 0.8);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            touch-action: pan-y;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            flex: 1;
+            width: 100%;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(58, 123, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 8px 15px 8px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: rgba(58, 123, 255, 0.25);
+        }
+        
+        .back-arrow {
+            margin-right: 6px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .content-block {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 15px;
+            padding: 30px 25px;
+            margin: 30px auto;
+            max-width: 1000px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(58, 123, 255, 0.2);
+        }
+        
+        .content-block h2, .content-block h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .content-block h3 {
+            font-size: 1.5rem;
+        }
+        
+        /* Таблица с горизонтальной прокруткой на мобильных */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .portfolio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            font-size: 1.1rem;
+            min-width: 450px;
+        }
+        
+        .portfolio-table th {
+            text-align: left;
+            padding: 15px 10px 10px;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .portfolio-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-weight: 500;
+        }
+        
+        .portfolio-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .asset-cell {
+            display: flex;
+            align-items: center;
+        }
+        
+        .allocation-bar {
+            display: inline-block;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 20px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 25px 0 10px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            padding: 20px 18px;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(58,123,255,0.3);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+        
+        .stat-note {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        .expense-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .expense-list li {
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .expense-list li:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .badge {
+            background: rgba(58,123,255,0.2);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        .disclaimer-block {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--primary);
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 30px 0 15px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .disclaimer-block i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        .contact-button-container {
+            text-align: center;
+            margin: 30px 0 10px;
+        }
+        
+        .contact-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(58, 123, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            gap: 12px;
+        }
+        
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(58, 123, 255, 0.5);
+        }
+        
+        .telegram-icon {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        /* График */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin: 20px 0 10px;
+        }
+        
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+            max-height: 400px;
+            background: transparent;
+            border-radius: 12px;
+        }
+        
+        .chart-note {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+
+        footer {
+            background: #111;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .legal-notice {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .legal-notice p {
+            color: var(--gray);
+            font-size: clamp(0.8rem, 2.5vw, 0.85rem);
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .law-references {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container { padding: 15px 12px; }
+            .back-button { top: 12px; left: 12px; padding: 6px 12px; font-size: 0.9rem; }
+            .content-block { padding: 22px 16px; }
+            .content-block h2 { font-size: 1.6rem; }
+            .content-block h3 { font-size: 1.3rem; }
+            .stat-value { font-size: 1.9rem; }
+            .stats-grid { gap: 15px; }
+            .badge { font-size: 0.8rem; }
+            .disclaimer-block { padding: 16px 18px; }
+            .contact-button { padding: 12px 28px; font-size: 1rem; }
+            canvas { max-height: 320px; }
+        }
+        
+        @media (max-width: 480px) {
+            .back-button span { display: none; } /* оставляем только стрелку */
+            .back-button { padding: 8px; border-radius: 30px; }
+            .back-arrow { margin-right: 0; width: 20px; height: 20px; }
+            .content-block h2 { font-size: 1.5rem; }
+            .portfolio-table { font-size: 0.95rem; min-width: 380px; }
+            .asset-cell i { font-size: 22px !important; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-card { padding: 16px; }
+            .stat-value { font-size: 1.7rem; }
+            .expense-list li { flex-direction: column; align-items: flex-start; }
+            .chart-note { text-align: left; }
+            .legal-notice p { font-size: 0.8rem; }
+        }
+
+        /* Для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .portfolio-table { min-width: 320px; }
+            .allocation-bar { width: 40px !important; }
+        }
+
+        /* Планшеты и средние экраны */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .content-block { padding: 28px 24px; }
+            canvas { max-height: 380px; }
+        }
+
+        /* Улучшение для сенсорных устройств */
+        .back-button, .contact-button, .faq-question {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="#" class="back-button" onclick="history.back(); return false;">
+            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Назад</span>
+        </a>
+
+        <!-- Заголовок -->
+        <section class="content-block" style="margin-top: 70px;">
+            <h2>🧊 Консервативная стратегия Asiento</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                Консервативный портфель — это модельная стратегия, предназначенная для сохранения капитала с умеренным накопительным ростом. 
+                Основу составляют инвестиции в крупнейшие криптоактивы (Bitcoin, Ethereum) и стейблкоин USDT. 
+                Портфель ориентирован на минимизацию волатильности, снижение рыночных рисков и поддержание высокого уровня ликвидности. 
+                <strong>Горизонт инвестирования — 12–24 месяца.</strong>
+            </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 15px;">
+                <span class="badge"><i class="fas fa-shield-alt"></i> Низкий риск</span>
+                <span class="badge"><i class="fas fa-water"></i> Высокая ликвидность</span>
+                <span class="badge"><i class="fas fa-chart-line"></i> Долгосрочный фокус</span>
+            </div>
+        </section>
+
+        <!-- График доходности -->
+        <section class="content-block">
+            <h3>📈 Динамика доходности: портфель vs индекс МосБиржи</h3>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div class="chart-note">
+                <i class="fas fa-info-circle"></i> Кумулятивная доходность с 01.01.2024 (нормировано к 0). Значения в процентах.
+            </div>
+            <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.9;">
+                Консервативный портфель демонстрирует устойчивый рост, опережая традиционный индекс МосБиржи на всём временном горизонте.
+            </p>
+        </section>
+
+        <!-- Структура портфеля (с горизонтальной прокруткой) -->
+        <section class="content-block">
+            <h3>📊 Структура портфеля</h3>
+            <div class="table-responsive">
+                <table class="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>Актив</th>
+                            <th>Доля</th>
+                            <th>Аллокация</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="asset-cell">
+                                    <i class="fab fa-bitcoin" style="font-size: 28px; width: auto; margin-right: 12px; color: #f7931a;"></i> 
+                                    Bitcoin (BTC)
+                                </span>
+                            </td>
+                            <td><strong>50%</strong></td>
+                            <td>
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="min-width: 45px;">50%</span>
+                                    <span class="allocation-bar" style="width: 120px; background: #f7931a;"></span>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="asset-cell">
+                                    <i class="fab fa-ethereum" style="font-size: 28px; width: auto; margin-right: 12px; color: #627eea;"></i> 
+                                    Ethereum (ETH)
+                                </span>
+                            </td>
+                            <td><strong>25%</strong></td>
+                            <td>
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="min-width: 45px;">25%</span>
+                                    <span class="allocation-bar" style="width: 60px; background: #627eea;"></span>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="asset-cell">
+                                    <i class="fas fa-dollar-sign" style="font-size: 28px; width: auto; margin-right: 12px; color: #26a17b;"></i> 
+                                    USDT (Tether)
+                                </span>
+                            </td>
+                            <td><strong>25%</strong></td>
+                            <td>
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="min-width: 45px;">25%</span>
+                                    <span class="allocation-bar" style="width: 60px; background: #26a17b;"></span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top: 20px; opacity: 0.9; font-style: italic;">
+                ⚖️ Выбранное соотношение обеспечивает баланс между потенциальным ростом (BTC, ETH) и стабильностью (USDT). 
+                При необходимости допускается подключение низкорискового стейкинга стейблкоинов для дополнительного дохода.
+            </p>
+        </section>
+
+        <!-- Ключевые показатели -->
+        <section class="content-block">
+            <h3>📈 Ключевые показатели</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label"><i class="fas fa-percent"></i> Расчётная годовая доходность</div>
+                    <div class="stat-value">33.44%</div>
+                    <div class="stat-note">средневзвешенная, не гарантируется</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label"><i class="fas fa-coins"></i> Минимальный порог</div>
+                    <div class="stat-value">100 USD</div>
+                    <div class="stat-note">или эквивалент в другой валюте</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label"><i class="fas fa-clock"></i> Горизонт</div>
+                    <div class="stat-value">12–24</div>
+                    <div class="stat-note">месяцев</div>
+                </div>
+            </div>
+            <p style="margin-top: 20px; background: rgba(0,0,0,0.2); padding: 12px 18px; border-radius: 40px; display: inline-block;">
+                💧 Доступ к средствам — перевод на указанный криптокошелёк. Сроки зависят от брокера/сервиса.
+            </p>
+        </section>
+
+        <!-- Расходы -->
+        <section class="content-block">
+            <h3>🧾 Расходы портфеля <span style="font-size: 1rem; font-weight: normal; margin-left: 10px;">(от среднегодовой СЧА)</span></h3>
+            <ul class="expense-list">
+                <li>
+                    <span><i class="fas fa-user-tie" style="margin-right: 10px; color: var(--primary);"></i> Вознаграждение брокера (управляющего)</span>
+                    <span><strong>до 5%</strong></span>
+                </li>
+                <li>
+                    <span><i class="fas fa-gas-pump" style="margin-right: 10px; color: var(--primary);"></i> Комиссии блокчейна (газ, переводы)</span>
+                    <span><strong>до 5%</strong> <span style="font-size: 0.8rem; opacity: 0.7;">(зависит от сети)</span></span>
+                </li>
+                <li>
+                    <span><i class="fas fa-ellipsis-h" style="margin-right: 10px; color: var(--primary);"></i> Прочие расходы</span>
+                    <span><strong>до 1%</strong></span>
+                </li>
+                <li style="border-top: 2px solid rgba(255,255,255,0.2); padding-top: 16px; margin-top: 8px;">
+                    <span><i class="fas fa-calculator" style="margin-right: 10px; color: white;"></i> Итого совокупные расходы</span>
+                    <span style="font-size: 1.3rem; color: white;">до 11% годовых</span>
+                </li>
+            </ul>
+            <p style="font-size: 0.9rem; margin-top: 20px; color: #aaa;">
+                * Фактические комиссии могут быть ниже в зависимости от выбранного брокера и загрузки сетей.
+            </p>
+        </section>
+
+        <!-- Дисклеймер -->
+        <div class="disclaimer-block">
+            <i class="fas fa-exclamation-triangle"></i> 
+            <strong>Публикация не является рекламой финансовых услуг, офертой или инвестиционной рекомендацией.</strong> 
+            ASIENTO — информационный проект, не имеющий лицензии ЦБ. Любые сделки с криптовалютами вы совершаете самостоятельно 
+            и принимаете все риски, включая возможную потерю капитала. Доходность, указанная в материале, — расчётная, не гарантируется.
+        </div>
+
+        <!-- Кнопка связи -->
+        <div class="contact-button-container">
+            <a href="https://t.me/asiento_ch" class="contact-button" target="_blank" rel="noopener noreferrer">
+                <svg class="telegram-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.15-.06-.21s-.17-.04-.25-.02c-.11.03-1.84 1.17-5.2 3.44-.49.33-.94.49-1.35.48-.45-.01-1.32-.26-1.97-.47-.79-.26-1.42-.4-1.37-.84.03-.27.32-.55.89-.84 3.5-1.55 5.83-2.6 6.93-3.12 3.14-1.5 3.79-1.76 4.22-1.77.1 0 .32.02.46.12.11.08.14.19.15.27-.01.06.01.28 0 .49z"/>
+                </svg>
+                Связаться в Telegram
+            </a>
+        </div>
+
+        <!-- FAQ -->
+        <section class="content-block" style="margin-top: 40px;">
+            <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="border-bottom: 1px solid #2a2a2a; padding-bottom: 12px;">
+                    <div style="font-weight: 600; margin-bottom: 6px;">❓ Почему именно BTC, ETH и USDT?</div>
+                    <div style="color: #ccc;">Это наиболее ликвидные и проверенные временем активы. BTC и ETH обеспечивают долгосрочный рост, а USDT снижает волатильность и служит «подушкой безопасности».</div>
+                </div>
+                <div style="border-bottom: 1px solid #2a2a2a; padding-bottom: 12px;">
+                    <div style="font-weight: 600; margin-bottom: 6px;">❓ Как часто происходит ребалансировка?</div>
+                    <div style="color: #ccc;">Ребалансировка проводится по необходимости, обычно раз в квартал или при сильном отклонении долей. Цель — сохранить заданное соотношение риска.</div>
+                </div>
+                <div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">❓ Могу ли я вывести средства досрочно?</div>
+                    <div style="color: #ccc;">Да, ликвидность высокая. Вывод осуществляется переводом на ваш кошелёк. Сроки зависят от брокера, но обычно в пределах 1–3 рабочих дней.</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="legal-notice">
+                <p>&copy; 2026 Asiento. Цифровые финансовые активы не являются платёжным средством в РФ.</p>
+                <div class="footer-links">
+                    <a href="#">Политика конфиденциальности и использования</a>
+                    <div class="law-references">
+                        <a href="#">ФЗ-259</a>
+                        <a href="#">ФЗ-115</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function(){
+            const backBtn = document.querySelector('.back-button');
+            if (backBtn && document.referrer === '') {
+                backBtn.setAttribute('href', 'index.html');
+            }
+
+            const dates = [
+                '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06',
+                '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12',
+                '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06',
+                '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12'
+            ];
+            
+            const portfolio = [
+                0, 0.334708, 0.475656, 0.300416, 0.454563, 0.370846, 0.3724, 0.236234, 0.292935,
+                0.352003, 0.765117, 0.69192, 0.76956, 0.471432, 0.387493, 0.479958, 0.713634,
+                0.726811, 1.006299, 1.03524, 1.061684, 0.98359, 0.700215, 0.668779
+            ];
+            
+            const index = [
+                0, 0.013253, 0.036817, 0.079549, 0.000937, -0.018614, -0.084472, -0.175431,
+                -0.110956, -0.20347, -0.197931, -0.103028, -0.082785, -0.004265, -0.062482,
+                -0.092008, -0.119894, -0.114122, -0.149933, -0.097945, -0.164766, -0.214359,
+                -0.167313, -0.139247
+            ];
+
+            const portfolioPercent = portfolio.map(v => v * 100);
+            const indexPercent = index.map(v => v * 100);
+
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            
+            const gradientPortfolio = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientPortfolio.addColorStop(0, 'rgba(58, 123, 255, 0.7)');
+            gradientPortfolio.addColorStop(1, 'rgba(58, 123, 255, 0.05)');
+            
+            const gradientIndex = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientIndex.addColorStop(0, 'rgba(187, 187, 187, 0.5)');
+            gradientIndex.addColorStop(1, 'rgba(187, 187, 187, 0.02)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'Консервативный портфель',
+                            data: portfolioPercent,
+                            borderColor: '#3a7bff',
+                            backgroundColor: gradientPortfolio,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#3a7bff',
+                            pointBorderColor: '#121212',
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Индекс МосБиржи',
+                            data: indexPercent,
+                            borderColor: '#bbbbbb',
+                            backgroundColor: gradientIndex,
+                            borderWidth: 2.5,
+                            borderDash: [5, 3],
+                            pointBackgroundColor: '#bbbbbb',
+                            pointBorderColor: '#121212',
+                            pointRadius: 2.5,
+                            pointHoverRadius: 5,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#f5f5f5',
+                                font: { family: 'Inter', size: 13, weight: '500' },
+                                usePointStyle: true,
+                                boxWidth: 10,
+                                padding: 15
+                            },
+                            align: 'center',
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1e1e1e',
+                            titleColor: '#f5f5f5',
+                            bodyColor: '#cccccc',
+                            borderColor: '#3a7bff',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { 
+                                color: '#bbbbbb',
+                                maxRotation: 35,
+                                font: { size: 11 },
+                                autoSkip: true,
+                                maxTicksLimit: 12
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.08)' },
+                            ticks: { 
+                                color: '#bbbbbb',
+                                callback: (v) => v + '%'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Кумулятивная доходность (%)',
+                                color: '#bbbbbb',
+                                font: { weight: '500', size: 12 }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+
+            // FAQ раскрытие (клик)
+            document.querySelectorAll('.content-block:last-of-type > div > div').forEach(item => {
+                const q = item.querySelector('div:first-child');
+                const a = item.querySelector('div:last-child');
+                if (q && a) {
+                    q.style.cursor = 'pointer';
+                    q.addEventListener('click', () => {
+                        a.style.display = a.style.display === 'none' ? 'block' : 'none';
+                        q.style.opacity = a.style.display === 'none' ? '1' : '0.8';
+                    });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

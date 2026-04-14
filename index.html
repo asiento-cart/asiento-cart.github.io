@@ -328,7 +328,7 @@
                         <img src="images/communication_sticker.png" alt="Поддержка">
                     </div>
                     <h3>Удобное взаимодействие</h3>
-                    <p>Через Telegram-бота и Telegram-канал.</p>
+                    <p>Через сообщество и группу в ВК.</p>
                 </div>
                 
                 <div class="feature-card">
@@ -354,7 +354,7 @@
                 
                 <div class="service-card" style="--bg-image: url('images/block2.jpg')" data-link="service/guarantee.html">
                     <h3>Процесс совершения сделок</h3>
-                    <p>Процесс сделок и юридические гарантии: оформление через договор, подбор брокера через Telegram, согласование курса и комиссий, оплата удобным способом, выдача чеков/выписок для налоговой и соблюдение процедур идентификации и проверки контрагентов.</p>
+                    <p>Процесс сделок и юридические гарантии: оформление через договор, подбор брокера через ВК, согласование курса и комиссий, оплата удобным способом, выдача чеков/выписок для налоговой и соблюдение процедур идентификации и проверки контрагентов.</p>
                     <a href="service/guarantee.html" class="more-link">Подробнее</a>
                 </div>
                 
@@ -446,9 +446,10 @@
         }
     </style>
 
-    <div id="tgModal" class="modal-overlay">
+    <!-- Модальное окно для перехода в ВК (ранее было для Telegram) -->
+    <div id="vkModal" class="modal-overlay">
         <div class="modal-content">
-            <p class="modal-text">Вы будете перенаправлены в наш Telegram-канал. Продолжить?</p>
+            <p class="modal-text">Вы будете перенаправлены в нашу группу в ВК. Продолжить?</p>
             <div class="modal-buttons">
                 <button id="cancelBtn" class="modal-btn modal-btn-secondary">Остаться</button>
                 <button id="confirmBtn" class="modal-btn modal-btn-primary">Перейти</button>
@@ -458,7 +459,7 @@
 
     <script>
         const contactBtn = document.getElementById('contactBtn');
-        const modal = document.getElementById('tgModal');
+        const modal = document.getElementById('vkModal'); // заменено с tgModal на vkModal
         const confirmBtn = document.getElementById('confirmBtn');
         const cancelBtn = document.getElementById('cancelBtn');
         const serviceCards = document.querySelectorAll('.service-card');
@@ -469,7 +470,8 @@
         });
         
         confirmBtn.addEventListener('click', () => {
-            window.location.href = 'https://t.me/asiento_ch';
+            // Замена ссылки Telegram на VK
+            window.location.href = 'https://vk.com/asiento';
         });
         
         const closeModal = () => {
